@@ -1,9 +1,24 @@
 from tela.abstract_tela import AbstractTela
-
+import PySimpleGUI as sg
 
 class TelaCliente(AbstractTela):
     def __init__(self):
-        pass
+        self.__window = None
+        self.init_components()
+
+    def init_components(self):
+
+        sg.ChangeLookAndFeel("Reddit")
+        menu_def = [
+            ['File', ['Open', 'Save', 'Exit', 'Properties']]
+        ]
+
+    def open(self):
+        button, values = self.__window.Read()
+        return button, values
+
+    def close(self):
+        self.__window.Close()
 
     def mostra_clientes(self, nome, cpf):
         print("--------------------------------------------")
@@ -12,90 +27,110 @@ class TelaCliente(AbstractTela):
         print("--------------------------------------------")
 
     def dados_cadastro(self):
-        nome = self.verifica_palavra("Digite seu nome: ")
+        layout = [
+            # [sg.Menu(menu_def, tearoff=True)]
+            [sg.Text('Nome: ')],
+            [sg.InputText()],
+            [sg.Text("Cpf: ")],
+            [sg.InputText()],
+            [sg.Text("Senha: ")],
+            [sg.InputText()],
 
-        cpf = self.le_numero_inteiro("Digite seu cpf: ", [])
+            [sg.Submit("Salvar"), sg.Cancel("Cancelar")]]
 
-        senha = input("Digite sua senha: ")
+        self.__window = sg.Window("Cadastro de cliente").Layout(layout)
 
-        return str(nome), int(cpf), str(senha)
+        return self.open()
 
     def login(self):
-        cpf = self.le_numero_inteiro("Digite seu cpf: ", [])
+        layout = [
+            # [sg.Menu(menu_def, tearoff=True)]
+            [sg.Text("Cpf:")],
+            [sg.InputText()],
+            [sg.Text("Senha:")],
+            [sg.InputText()],
 
-        senha = input("Digite sua senha: ")
+            [sg.Submit("Salvar"), sg.Cancel("Cancelar")]]
 
-        return cpf, senha
+        self.__window = sg.Window("Login de cliente").Layout(layout)
+
+        return self.open()
 
     def tela_remove(self):
-        cpf = self.le_numero_inteiro("Digite seu cpf: ", [])
+        layout = [
+            [sg.Text("Cpf:")],
+            [sg.InputText()],
+            [sg.Text("Senha:")],
+            [sg.InputText()],
 
-        senha = input("Digite sua senha: ")
+            [sg.Submit("Salvar"), sg.Cancel("Cancelar")]]
 
-        opcao = self.confirma_tela("remove_cadastro", "")
+        self.__window = sg.Window("Remover cadastro").Layout(layout)
 
-        if opcao == 1:
-            return cpf, senha
-        elif opcao == 2:
-            return 0, -1
+        return self.open()
 
     def tela_atualiza_cadastro(self):
-        print("O que você deseja alterar?")
-        print("1 - Nome")
-        print("2 - Senha")
-        print("0 - Voltar")
+        layout = [
+            # [sg.Menu(menu_def, tearoff=True)]
+            [sg.Text('Nome: ')],
+            [sg.InputText()],
+            [sg.Text("Senha: ")],
+            [sg.InputText()],
 
-        opcao = self.le_numero_inteiro("Escolha a opcao: ", [1, 2, 0])
+            [sg.Submit("Salvar"), sg.Cancel("Cancelar")]]
 
-        if opcao == 1:
-            dado = self.verifica_palavra("Digite seu novo nome: ")
+        self.__window = sg.Window("Alterar cadastro").Layout(layout)
 
-        elif opcao == 2:
-            dado = input("Digite sua nova senha: ")
-
-        elif opcao == 0:
-            dado = 0
-        return opcao, dado
+        return self.open()
 
     def tela_mostra_cadastro(self, nome, cpf, senha):
-        print("--------------------------------------------")
-        print("Nome:", nome.lower().capitalize())
-        print("CPF:", cpf)
-        print("Senha:", senha)
-        print("--------------------------------------------")
-        print("")
+        layout = [
+            [sg.Text("Nome:", size=(10,1)), sg.Text(nome)],
+            [sg.Text("Cpf:", size=(10,1)), sg.Text(cpf)],
+            [sg.Text("Senha:", size=(10,1)), sg.Text(senha)],
+            [sg.Button("Alterar Cadastro"), sg.Button("Remover Cadastro"), sg.Cancel("Voltar")]]
+
+        self.__window = sg.Window(nome, default_element_size=(100, 50)).Layout(layout)
+
+        return self.open()
 
     def tela_cliente_logado(self, nome_cliente: str):
-        print("Ola", nome_cliente.lower().capitalize(), "o que você deseja?")
-        print("1 - Comprar")
-        print("2 - Ver Cadastro")
-        print("3 - Alterar Cadastro")
-        print("4 - Remover Cadastro")
-        print("5 - Notas Fiscais")
-        print("0 - Sair")
+        layout = [
+            # [sg.Menu(menu_def, tearoff=True)]
+            [sg.Text("Olá o que deseja?", size=(30, 2))],
+            [sg.Button("Cadastro")],
+            [sg.Button("Comprar")],
+            [sg.Button("Notas Fiscais")],
+            [sg.Button("Sair")]]
 
-        opcao = self.le_numero_inteiro("Escolha a opcao: ", [1, 2, 3, 4, 5, 0])
-        return opcao
+        self.__window = sg.Window(nome_cliente).Layout(layout)
+
+        return self.open()
 
     def mostra_opcoes(self):
-        print("Como cliente você deseja:")
-        print("1 - Logar")
-        print("2 - Cadastrar")
-        print("0 - Voltar")
+        layout = [
+            # [sg.Menu(menu_def, tearoff=True)]
+            [sg.Text('Como cliente você deseja?', size=(30, 2))],
+            [sg.Cancel("Voltar")],
 
-        opcao = self.le_numero_inteiro("Escolha a opcao: ", [1, 2, 0])
-        return opcao
+            [sg.Button("Logar"), sg.Button("Cadastrar")]]
+
+        self.__window = sg.Window("Cliente").Layout(layout)
+
+        return self.open()
 
     def avisos(self, opcao: str):
         dicionario = {
             "cadastrar": "Cliente cadastrado com sucesso!",
             "remover": "Cliente removido com sucesso!",
             "dados_invalidos": "Erro! Digite o cpf ou a senha corretamente!",
-            "atualiza": "Cliente alterado com sucesso!",
+            "desloga": "Usuário deslogado com sucesso!",
+            "atualiza": "Dados alterados com sucesso!",
             "usuario_ja_cadastrado": "Cliente já cadastrado",
-            "operacao_cancelada": "Operação Cancelada"}
-        self.limpa_tela()
+            "operacao_cancelada": "Operação Cancelada",
+            "campo_vazio": "Preencha todos os campos!"}
 
-        print(dicionario[opcao])
+        sg.Popup(dicionario[opcao])
 
-        # fazer dicionário
+
+

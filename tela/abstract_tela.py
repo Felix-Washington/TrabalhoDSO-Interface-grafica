@@ -1,10 +1,10 @@
 from abc import ABC, abstractmethod
-import os
+import PySimpleGUI as sg
 
 
 class AbstractTela(ABC):
     @abstractmethod
-    def __init__():
+    def __init__(self):
         pass
 
     def le_numero_inteiro(self, mensagem: str, opcoes_validas: []):
@@ -52,32 +52,21 @@ class AbstractTela(ABC):
         pass
 
     def limpa_tela(self):
-        os.system('cls' if os.name == 'nt' else 'clear')
+        pass
 
     def confirma_tela(self, entidade: str, nome: str):
-        os.system('cls' if os.name == 'nt' else 'clear')
-
-        if entidade == "pessoa":
-            print(nome.lower().capitalize(), "tem certeza que deseja sair da sua conta?")
-
-        elif entidade == "menu":
-            print("Tem certeza que quer fechar o sistema?")
-
-        elif entidade == "atualiza":
-            print("Tem certeza que deseja mudar", nome)
-
-        elif entidade == "volta":
-            print("Tem certeza que deseja voltar?")
-
-        elif entidade == "remove_cadastro":
-            print("Tem certeza que deseja remover o cadastro?")
-
-        elif entidade == "finaliza_compra":
-            print("Tem certeza que deseja finalizar a compra de", nome, "R$?")
-
-        print("1 - Sim")
-        print("2 - Não")
-
-        opcao = self.le_numero_inteiro("", [1, 2])
-
-        return opcao
+        tipos_verificacoes = {
+            "pessoa": "Tem certeza que deseja sair da sua conta?",
+            "menu": "Tem certeza que quer fechar o sistema?",
+            "atualiza": "Tem certeza que deseja mudar?",
+            "volta": "Tem certeza que deseja voltar?",
+            "remove_cadastro": "Tem certeza que deseja remover o cadastro?",
+            "finaliza_compra": "Tem certeza que deseja finalizar a compra?",
+        }
+        layout = [
+            [sg.Text(tipos_verificacoes[entidade])],
+            [sg.Button("Sim"), sg.Button("Não")],
+        ]
+        window = sg.Window("Confirmação").Layout(layout)
+        button, values = window.Read()
+        return button, values

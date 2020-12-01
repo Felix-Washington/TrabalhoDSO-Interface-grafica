@@ -1,39 +1,68 @@
 from tela.abstract_tela import AbstractTela
+import PySimpleGUI as sg
 
 
 class TelaProduto(AbstractTela):
     def __init__(self, controlador_produto):
         self.__controle = controlador_produto
+        self.__window = None
+
+        self.init_components()
+
+    def init_components(self):
+        sg.ChangeLookAndFeel("Reddit")
+        menu_def = [
+            ['File', ['Open', 'Save', 'Exit', 'Properties']]
+        ]
 
     def mostra_opcoes(self):
-        print("------ PRODUTO ------")
-        print("1 - Adicionar Produto")
-        print("2 - Remover Produto")
-        print("3 - Atualizar Produto")
-        print("4 - Listar Produtos")
-        print("0 - Voltar")
+        layout = [
+            [sg.Text('O que você deseja?')],
 
-        opcao = self.le_numero_inteiro("Escolha a opcao: ", [1, 2, 3, 4, 0])
-        return opcao
+            [sg.Button("Adicionar produto")],
+            [sg.Button("Listar produtos")],
+
+            [sg.Cancel("Voltar")]
+
+        ]
+
+        self.__window = sg.Window("Produtos").Layout(layout)
+
+        return self.open()
+
+    def open(self):
+        button, values = self.__window.Read()
+        return button, values
+
+    def close(self):
+        self.__window.Close()
 
     def requisita_dados_cadastro(self):
-        print("------ CADASTRAR PRODUTO------")
-        codigo = self.le_numero_inteiro("Codigo do produto: ", [])
+        layout = [
+            # [sg.Menu(menu_def, tearoff=True)]
+            [sg.Text('Código: ', size=(20, 1)), sg.InputText()],
+            [sg.Text("Nome: ", size=(20, 1)), sg.InputText()],
+            [sg.Text("Valor: ", size=(20, 1)), sg.InputText()],
+            [sg.Text("Quantidade", size=(20, 2)), sg.InputText()],
 
-        nome = self.verifica_palavra("Nome do produto: ")
+            [sg.Submit("Salvar"), sg.Cancel("Cancelar")]]
 
-        valor = self.verifica_float("Valor do produto: ")
+        self.__window = sg.Window("Cadastro de produto").Layout(layout)
 
-        quantidade = self.le_numero_inteiro("Quantidade do produto: ", [])
-        return {"codigo": codigo, "nome": nome, "valor": valor, "quantidade": quantidade}
+        return self.open()
 
-    def mostra_dados_cadastrados(self, codigo: int, nome: str, valor: float, quantidade: int):
-        print("---------------------------------")
-        print("Codigo: ", codigo)
-        print("Nome: ", nome)
-        print("Valor: ", valor)
-        print("Quantidade: ", quantidade)
-        print("---------------------------------")
+    def mostra_dados_cadastrados(self, lista_produtos: list):
+        layout = [
+            # [sg.Menu(menu_def, tearoff=True)]
+            [sg.Text("Codigo: "), sg.Text("Nome"), sg.Text("Valor"), sg.Text("Quantidade")],
+            [sg.Text(lista_produtos.codigo)], [sg.Text(lista_produtos.nome)], [sg.Text(lista_produtos.codigo)],
+
+            [sg.Cancel("Voltar")]]
+
+
+        self.__window = sg.Window("Produtos").Layout(layout)
+
+        self.open()
 
     def requisita_dado_remover(self):
         print("------REMOVER PRODUTO------")
@@ -54,20 +83,15 @@ class TelaProduto(AbstractTela):
         return {"nome": nome, "valor": valor, "quantidade": quantidade}
 
     def avisos(self, opcao: str):
-        self.limpa_tela()
+        dicionario = {
+            "produto_ja_cadastrado": "Produto já cadastrado!",
+            "produto_adicionado": "Produto adicionado ao carrinho!",
+            "produto_cadastrado": "Produto cadastrado com sucesso!",
+            "atualiza_produto": "Produto alterado com sucesso!",
+            "remove_produto": "Produto removido do estoque!",
+            "codigo_invalido": "Digite um código válido!",
+            "operacao_cancelada": "Operação cancelada!",
+            "campo_vazio": "Preencha todos os campos!"
+        }
 
-        if opcao == "produto_ja_cadastrado":
-            print("Produto já cadastrado!", "\n")
-
-        elif opcao == "produto_adicionado":
-            print("Produto adicionado ao carrinho!", "\n")
-
-        elif opcao == "produto_cadastrado":
-            print("Produto cadastrado com sucesso!", "\n")
-
-        elif opcao == "atualiza_produto":
-            print("Produto alterado com sucesso!")
-        elif opcao == "remove_produto":
-            print("Produto removido do estoque!")
-        elif opcao == "codigo_invalido":
-            print("Digite um código válido!")
+        sg.Popup(dicionario[opcao])

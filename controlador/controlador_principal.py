@@ -6,7 +6,7 @@ from controlador.controlador_carrinho import ControladorCarrinho
 from tela.tela_principal import TelaPrincipal
 
 
-class ControladorPrincipal():
+class ControladorPrincipal:
     def __init__(self):
         self.__controlador_cliente = ControladorCliente(self)
         self.__controlador_funcionario = ControladorFuncionario(self)
@@ -33,9 +33,11 @@ class ControladorPrincipal():
         self.abre_tela_inicial()
 
     def mostra_tela_funcionario(self):
+        self.__tela_principal.close()
         self.__controlador_funcionario.abre_tela_inicial()
 
     def mostra_tela_cliente(self):
+        self.__tela_principal.close()
         self.__controlador_cliente.abre_tela_inicial()
 
     def mostra_tela_produto(self):
@@ -48,18 +50,25 @@ class ControladorPrincipal():
         self.__controlador_cliente.cliente_logado.notas_fiscais.append(nota_fiscal)
 
     def abre_tela_inicial(self):
-        lista_opcoes = {
-            1: self.mostra_tela_funcionario,
-            2: self.mostra_tela_cliente,
-            0: self.fecha_sistema}
 
         while self.__exibe_tela:
-            opcao_escolhida = self.__tela_principal.mostra_opcoes()
 
-            funcao_escolhida = lista_opcoes[opcao_escolhida]
+            button, values = self.__tela_principal.mostra_opcoes()
 
-            funcao_escolhida()
+            if button == "Funcionário":
+                self.mostra_tela_funcionario()
+
+            elif button == "Cliente":
+                self.mostra_tela_cliente()
+
+            else:
+
+                self.fecha_sistema()
+
+
+
 
     def fecha_sistema(self):
         self.__exibe_tela = False
+        self.__tela_principal.close()
         self.__tela_principal.avisos("finaliza")

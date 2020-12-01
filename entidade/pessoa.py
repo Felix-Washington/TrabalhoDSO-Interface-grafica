@@ -22,7 +22,7 @@ class Pessoa(ABC):
 
 
   @property
-  def cpf (self):
+  def cpf(self):
     return self.__cpf
 
 

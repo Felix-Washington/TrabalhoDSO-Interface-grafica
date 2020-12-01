@@ -1,25 +1,46 @@
 from tela.abstract_tela import AbstractTela
+import PySimpleGUI as sg
 
 
 class TelaPrincipal(AbstractTela):
+
     def __init__(self, controlador):
         self.__controlador = controlador
+        self.__window = None
+
+    def init_components(self):
+
+        sg.ChangeLookAndFeel("Reddit")
+        menu_def = [
+            ['File', ['Open', 'Save', 'Exit', 'Properties']]
+        ]
 
     def mostra_opcoes(self):
+        layout = [
+            [sg.Text('Como você deseja entrar?', size=(30, 2))],
 
-        print("------ COMO DESEJA LOGAR ------")
-        print("1 - Funcionário")
-        print("2 - Cliente")
-        print("0 - Finalizar Sistema")
+            [sg.Button("Funcionário"), sg.Button("Cliente")]]
 
-        opcao = self.le_numero_inteiro("Escolha a opção: ", [1, 2, 0])
-        return opcao
+        self.__window = sg.Window("Loja de Brinquedos", default_element_size=(100, 50)).Layout(layout)
+
+        return self.open()
+
+    def open(self):
+        button, values = self.__window.Read()
+        return button, values
+
+    def close(self):
+        self.__window.Close()
+
+    @property
+    def window(self):
+        return self.__window
+
 
     def avisos(self, opcao: str):
-        self.limpa_tela()
+        dicionario = {
+            "inicia": "Bem vindo a loja de brinquedos!",
+            "finaliza": "Sistema encerrado!",
+            }
 
-        if opcao == "inicia":
-            print("Bem vindo a loja de brinquedos!", "\n")
-
-        elif opcao == "finaliza":
-            print("Sistema Encerrado!")
+        sg.Popup(dicionario[opcao])

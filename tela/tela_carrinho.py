@@ -1,13 +1,24 @@
 from tela.abstract_tela import AbstractTela
-
+import PySimpleGUI as sg
 
 class TelaCarrinho(AbstractTela):
 
     def __init__(self, controlador_carrinho):
         self.__controlador = controlador_carrinho
+        self.__window = None
+
+
 
     def mostra_opcoes(self):
-        print("------ REALIZAR COMPRA ------")
+        layout = [
+            # [sg.Menu(menu_def, tearoff=True)]
+            [sg.Text('Como funcionário você deseja?')],
+            [sg.Cancel("Voltar")],
+
+            [sg.Button("Logar"), sg.Button("Cadastrar")]]
+
+        self.__window = sg.Window("Realizar Compra").Layout(layout)
+
         print("1 - Listar produtos disponíveis")
         print("2 - Adicionar produto")
         print("3 - Remover produto")
@@ -19,6 +30,13 @@ class TelaCarrinho(AbstractTela):
 
         opcao = self.le_numero_inteiro("Escolha a opcao: ", [1, 2, 3, 4, 5, 6, 7, 0])
         return opcao
+
+    def open(self):
+        button, values = self.__window.Read()
+        return button, values
+
+    def close(self):
+        self.__window.Close()
 
     def requisita_dados_adicionar(self):
         print("------ ADICIONAR PRODUTO NO CARRINHO------")

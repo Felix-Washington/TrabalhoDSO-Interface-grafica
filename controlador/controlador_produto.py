@@ -15,18 +15,36 @@ class ControladorProduto(AbstractControlador):
         return self.__produtos
 
     def adiciona(self):
-        dados = self.__tela_produto.requisita_dados_cadastro()
-        ja_existe = False
-        for produto in self.produtos:
-            if dados["codigo"] == produto.codigo:
-                ja_existe = True
-                break
-        if not ja_existe:
-            novo_produto = Produto(dados["codigo"], dados["nome"], dados["valor"], dados["quantidade"])
-            self.__produtos.append(novo_produto)
-            self.__tela_produto.avisos("produto_cadastrado")
-        else:
-            self.__tela_produto.avisos("produto_ja_cadastrado")
+        tela_adiciona = True
+
+        while tela_adiciona:
+            button, values = self.__tela_produto.requisita_dados_cadastro()
+
+            if button == "Cancelar":
+                print(button)
+                self.__tela_produto.avisos("operacao_cancelada")
+                tela_adiciona = False
+
+            elif values[0] == "" or values[1] == "" or values[2] == "" or values[3] == "":
+                self.__tela_produto.avisos("campo_vazio")
+
+            else:
+
+                ja_existe = False
+                for produto in self.produtos:
+                    if int(values[0]) == produto.codigo:
+                        ja_existe = True
+                        break
+                if not ja_existe:
+                    novo_produto = Produto(values[0], values[1], values[2], values[3])
+                    self.__produtos.append(novo_produto)
+                    self.__tela_produto.avisos("produto_cadastrado")
+                else:
+                    self.__tela_produto.avisos("produto_ja_cadastrado")
+
+
+            self.__tela_produto.close()
+
 
     def remove(self):
         codigo = self.__tela_produto.requisita_dado_remover()
@@ -56,28 +74,26 @@ class ControladorProduto(AbstractControlador):
             self.__tela_produto.avisos("codigo_invalido")
 
     def lista(self):
-        self.limpa_tela()
+
         for produto in self.__produtos:
             self.__tela_produto.mostra_dados_cadastrados(produto.codigo, produto.nome, produto.valor,
                                                          produto.quantidade)
 
     def abre_tela_inicial(self):
-        opcoes = {
-            1: self.adiciona,
-            2: self.remove,
-            3: self.atualiza,
-            4: self.lista,
-            0: self.finaliza_tela}
+        lista_opcoes = {
+            "Adicionar produto": self.adiciona,
+            "Listar produtos": self.lista,
+            "Voltar": self.finaliza_tela}
 
-        self.limpa_tela()
         self.__exibe_tela = True
         while self.__exibe_tela:
-            opcao = self.__tela_produto.mostra_opcoes()
-            funcao = opcoes[opcao]
-            funcao()
+            button, values = self.__tela_produto.mostra_opcoes()
+            funcao_escolhida = lista_opcoes[button]
+            self.__tela_produto.close()
+            funcao_escolhida()
 
     def finaliza_tela(self):
-        self.limpa_tela()
+        self.__tela_produto.close()
         self.__exibe_tela = False
 
     def base_dados_produto(self):

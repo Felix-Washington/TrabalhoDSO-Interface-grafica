@@ -1,90 +1,135 @@
 from tela.abstract_tela import AbstractTela
-
+import PySimpleGUI as sg
 
 class TelaFuncionario(AbstractTela):
     def __init__(self):
-        pass
+        self.__window = None
 
-    def dados_cadastro(self):
-        nome = self.verifica_palavra("Digite seu nome: ")
+    def init_components(self):
 
-        cpf = self.le_numero_inteiro("Digite seu cpf:  ", "")
-
-        senha = input("Digite a sua senha: ")
-
-        return nome, cpf, senha
-
-    def login(self):
-        cpf = self.le_numero_inteiro("Digite seu cpf:  ", "")
-
-        senha = input("Digite a sua senha: ")
-
-        return cpf, senha
-
-    def tela_atualiza_cadastro(self):
-        print("O que você quer alterar?")
-        print("1 - Nome")
-        print("2 - Senha")
-
-        opcao = self.le_numero_inteiro("Escolha a opcao: ", [1, 2])
-        if opcao == 1:
-            dado = self.verifica_palavra("Digite seu novo nome: ")
-
-        elif opcao == 2:
-            dado = input("Digite a sua nova senha: ")
-
-        return opcao, dado
-
-    def tela_remove(self):
-        cpf = self.le_numero_inteiro("Digite seu cpf:  ", "")
-
-        senha = input("Digite sua senha: ")
-
-        opcao = self.confirma_tela("remove_cadastro", "")
-
-        if opcao == 1:
-            return cpf, senha
-        elif opcao == 2:
-            return 0, 0
-
-    def tela_mostra_cadastro(self, nome, cpf, senha):
-        print("--------------------------------------------")
-        print("Nome:", nome.lower().capitalize())
-        print("CPF:", cpf)
-        print("Senha:", senha)
-        print("--------------------------------------------")
-
-    def tela_funcionario_logado(self, nome_funcionario: str):
-        print("Ola", nome_funcionario.lower().capitalize(), "o que você deseja?")
-        print("1 - Ver Estoque")
-        print("2 - Ver Cadastro")
-        print("3 - Alterar Cadastro")
-        print("4 - Remover Cadastro")
-        print("5 - Listar Clientes")
-        print("0 - Sair")
-
-        opcao = self.le_numero_inteiro("Escolha a opcao: ", [1, 2, 3, 4, 5, 0])
-
-        return opcao
+        sg.ChangeLookAndFeel("Reddit")
+        menu_def = [
+            ['File', ['Open', 'Save', 'Exit', 'Properties']]
+        ]
 
     def mostra_opcoes(self):
-        print("Como funcionário você deseja:")
-        print("1 - Logar")
-        print("2 - Cadastrar")
-        print("0 - Voltar")
+        layout = [
+            [sg.Text('Como funcionário você deseja?', size=(30, 2))],
+            [sg.Cancel("Voltar")],
 
-        opcao = self.le_numero_inteiro("Escolha a opcao: ", [1, 2, 0])
-        return opcao
+            [sg.Button("Logar"), sg.Button("Cadastrar")]]
+
+        self.__window = sg.Window("Funcionário", default_element_size=(100, 50)).Layout(layout)
+
+        return self.open()
+
+    def dados_cadastro(self):
+        layout = [
+            # [sg.Menu(menu_def, tearoff=True)]
+            [sg.Text('Nome: ')],
+            [sg.InputText()],
+            [sg.Text("Cpf: ")],
+            [sg.InputText()],
+            [sg.Text("Senha: ")],
+            [sg.InputText()],
+
+            [sg.Submit("Salvar"), sg.Cancel("Cancelar")]]
+
+        self.__window = sg.Window("Cadastro de funcionário").Layout(layout)
+
+        return self.open()
+
+    def open(self):
+        button, values = self.__window.Read()
+        return button, values
+
+    def close(self):
+        self.__window.Close()
+
+    def login(self):
+        layout = [
+            # [sg.Menu(menu_def, tearoff=True)]
+            [sg.Text("Cpf:")],
+            [sg.InputText()],
+            [sg.Text("Senha:")],
+            [sg.InputText()],
+
+            [sg.Submit("Salvar"), sg.Cancel("Cancelar")]]
+
+        self.__window = sg.Window("Login de funcionário").Layout(layout)
+
+        return self.open()
+
+    def tela_atualiza_cadastro(self):
+        layout = [
+            [sg.Text('Nome: ')],
+            [sg.InputText()],
+            [sg.Text("Senha: ")],
+            [sg.InputText()],
+
+            [sg.Submit("Salvar"), sg.Cancel("Cancelar")]]
+
+        self.__window = sg.Window("Alterar cadastro").Layout(layout)
+
+        return self.open()
+
+    def tela_remove(self):
+        layout = [
+            [sg.Text("Cpf:")],
+            [sg.InputText()],
+            [sg.Text("Senha:")],
+            [sg.InputText()],
+
+            [sg.Submit("Salvar"), sg.Cancel("Cancelar")]]
+
+        self.__window = sg.Window("Remover cadastro").Layout(layout)
+
+        return self.open()
+
+    def tela_mostra_cadastro(self, nome, cpf, senha):
+        layout = [
+            [sg.Text("Nome:", size=(10, 1)), sg.Text(nome)],
+            [sg.Text("Cpf:", size=(10, 1)), sg.Text(cpf)],
+            [sg.Text("Senha:", size=(10, 1)), sg.Text(senha)],
+            [sg.Button("Alterar Cadastro"), sg.Button("Remover Cadastro"), sg.Cancel("Voltar")]]
+
+        self.__window = sg.Window(nome, default_element_size=(100, 50)).Layout(layout)
+
+        return self.open()
+
+    def tela_funcionario_logado(self, nome_funcionario: str):
+        layout = [
+            # [sg.Menu(menu_def, tearoff=True)]
+            [sg.Text("Olá o que deseja?")],
+            [sg.Button("Cadastro")],
+            [sg.Button("Ver Estoque"), sg.Button("Lista de clientes")],
+            [sg.Button("Sair")]]
+
+        self.__window = sg.Window("Funcionário").Layout(layout)
+
+        return self.open()
+
+    def mostra_clientes(self, clientes: []):
+        layout = [
+            # [sg.Menu(menu_def, tearoff=True)]
+            [sg.Text("Clientes")],
+
+            [sg.Button("Voltar")]]
+
+        self.__window = sg.Window("Lista de clientes").Layout(layout)
 
     def avisos(self, opcao: str):
-        self.limpa_tela()
         dicionario = {
             "cadastrar": "Funcionário cadastrado com sucesso!",
             "remover": "Funcionário removido com sucesso!",
             "dados_invalidos": "Erro! Digite o cpf ou a senha corretamente!",
             "atualiza": "Funcionário alterado com sucesso!",
             "usuario_ja_cadastrado": "Funcionário já cadastrado",
-            "operacao_cancelada": "Operação Cancelada"}
+            "operacao_cancelada": "Operação Cancelada",
+            "campo_vazio": "Preencha todos os campos!"}
 
-        print("")
-        print(dicionario[opcao])
+        sg.Popup(dicionario[opcao])
+
+    @property
+    def window(self):
+        return self.__window
