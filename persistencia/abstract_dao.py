@@ -9,11 +9,22 @@ class AbstractDAO(ABC):
             self.load()
         except FileNotFoundError:
             self.dump()
-    def dump(self):
-        pass
-    def load(self):
-        pass
-    def add(self):
-        pass
+    def __dump(self):
+        pickle.dump(self.__object_cache, open(self.__datasource,'wb'))
+    def __load(self):
+        self.__object_cache = pickle.load(open(self.__datasource,'rb'))
+    def add(self, key, obj):
+        self.__object_cache[key] = obj
+        self.__dump()
     def get(self, key):
-        pass
+        try:
+            return self.__object_cache[key]
+        except KeyError:
+            pass
+    def get_all(self):
+        return self.__object_cache.values()
+    def remove(self, key):
+        try:
+            self.__object_cache.pop(key)
+        except KeyError:
+            pass
