@@ -119,6 +119,18 @@ class TelaCliente(AbstractTela):
 
         return self.open()
 
+
+    def mostra_notas_fiscais(self, notas_fiscais):
+        layout = [
+            # [sg.Menu(menu_def, tearoff=True)]
+            [sg.Text("Notas Fiscais", size=(20, 1))],
+
+            [sg.Cancel("Button")]]
+
+        self.__window = sg.Window("Notas fiscais").Layout(layout)
+
+        return self.open()
+
     def avisos(self, opcao: str):
         dicionario = {
             "cadastrar": "Cliente cadastrado com sucesso!",

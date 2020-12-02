@@ -2,6 +2,7 @@ from controlador.abstract_controlador import AbstractControlador
 from entidade.cliente import Cliente
 from tela.tela_cliente import TelaCliente
 from persistencia.cliente_dao import ClienteDAO
+from tela.nota_fiscal import NotaFiscal
 
 class ControladorCliente(AbstractControlador):
     def __init__(self, controlador):
@@ -10,7 +11,7 @@ class ControladorCliente(AbstractControlador):
         self.__tela_cliente = TelaCliente()
         self.__controlador_principal = controlador
         self.__cliente_logado = None
-
+        self.__tela_nota_fiscal = NotaFiscal
         self.__log_cliente = True
 
         self.base_dados_cliente()
@@ -43,9 +44,8 @@ class ControladorCliente(AbstractControlador):
         while tela_login:
             button, values = self.__tela_cliente.login()
 
-            if button == "Cancelar":
+            if button == "Cancelar" or button == "None":
                 tela_login = False
-                self.__tela_cliente.close()
                 self.__tela_cliente.avisos("operacao_cancelada")
 
             elif values[0] == "" or values[1] == "":
@@ -59,7 +59,8 @@ class ControladorCliente(AbstractControlador):
                 for um_cliente in self.__clientes:
                     if cpf == um_cliente.cpf and senha == um_cliente.senha:
                         encontrou = True
-                        break
+
+                        #break
 
                 if encontrou:
                     self.__cliente_logado = um_cliente
@@ -67,6 +68,8 @@ class ControladorCliente(AbstractControlador):
                     tela_login = False
                 else:
                     self.__tela_cliente.avisos("dados_invalidos")
+
+            self.__tela_cliente.close()
 
     def adiciona(self):
         tela_adiciona = True
@@ -86,10 +89,10 @@ class ControladorCliente(AbstractControlador):
                 cpf = int(values[1])
                 senha = values[2]
                 for um_cliente in self.__clientes:
-
+                    print(um_cliente.cpf, cpf)
                     if um_cliente.cpf == cpf:
                         self.__tela_cliente.avisos("usuario_ja_cadastrado")
-                        break
+
                     else:
                         cliente = Cliente(nome, cpf, senha)
                         self.__clientes.append(cliente)
@@ -97,7 +100,7 @@ class ControladorCliente(AbstractControlador):
                         tela_adiciona = False
                         break
 
-            self.__tela_funcionario.close()
+            self.__tela_cliente.close()
 
     def finaliza_tela(self):
         self.__exibe_tela = False
@@ -196,17 +199,19 @@ class ControladorCliente(AbstractControlador):
             self.__tela_cliente.close()
 
     def lista_nota_fiscal(self):
-        for nota_fiscal in self.__cliente_logado.notas_fiscais:
-            nota_fiscal.relatorio_compras()
+
+        self.__tela_nota_fiscal.relatorio_compras(self.__cliente_logado.notas_fiscais)
 
     def desloga(self):
 
         button, values = self.__tela_cliente.confirma_tela("pessoa", self.__cliente_logado.nome)
-        self.__tela_cliente.close()
         if button == "Sim":
             self.__log_cliente = False
             self.__cliente_logado = None
             self.__tela_cliente.avisos("desloga")
+            self.__tela_cliente.close()
+
+
 
     def base_dados_cliente(self):
         cliente = Cliente("Lucas", 123, "123")
@@ -219,6 +224,5 @@ class ControladorCliente(AbstractControlador):
         self.__clientes.append(cliente)
 
     def lista_clientes(self):
-        self.limpa_tela()
         for cliente in self.__clientes:
             self.__tela_cliente.mostra_clientes(cliente.nome, cliente.cpf)
