@@ -38,6 +38,7 @@ class ControladorProduto(AbstractControlador):
                 if not ja_existe:
                     novo_produto = Produto(values[0], values[1], values[2], values[3])
                     self.__produto_dao.add(novo_produto)
+
                     self.__tela_produto.avisos("produto_cadastrado")
                 else:
                     self.__tela_produto.avisos("produto_ja_cadastrado")
@@ -49,7 +50,7 @@ class ControladorProduto(AbstractControlador):
         codigo = self.__tela_produto.requisita_dado_remover()
         for produto in self.__produto_dao.get_all():
             if produto.codigo == codigo:
-                produto_remover = (produto)
+                produto_remover = produto
                 self.__produto_dao.remove(produto_remover)
                 self.__tela_produto.avisos("produto_removido")
                 break
@@ -79,7 +80,7 @@ class ControladorProduto(AbstractControlador):
                                                          str(produto.quantidade))
 
             #sg.Listbox(values=(dados), size=(30, 5))
-            return dados
+        #return dados
         self.__tela_produto.mostra_dados_cadastrados(dados)
 
     def abre_tela_inicial(self):
@@ -98,4 +99,3 @@ class ControladorProduto(AbstractControlador):
     def finaliza_tela(self):
         self.__tela_produto.close()
         self.__exibe_tela = False
-

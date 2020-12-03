@@ -56,6 +56,7 @@ class TelaProduto(AbstractTela):
 
 
         return self.open()
+        self.close()
 
     def mostra_dados_cadastrados(self,dados):
 
@@ -66,13 +67,11 @@ class TelaProduto(AbstractTela):
             #[sg.Listbox(produto.codigo, size = (50, 10), key = 'BOX')]
 
             [sg.Text("Produtos cadastrados: ")],
-            [sg.Listbox(dados, size=(30,5), key='lb_produtos')],
+            [sg.Listbox(values=dados, size=(30,5), key='lb_produtos')],
             [sg.Cancel("Voltar")]]
 
         self.__window = sg.Window("Produtos").Layout(layout)
-
-
-        self.open()
+        return self.open()
 
     def requisita_dado_remover(self):
         print("------REMOVER PRODUTO------")
