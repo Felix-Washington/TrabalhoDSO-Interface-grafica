@@ -66,11 +66,11 @@ class TelaProduto(AbstractTela):
             #[sg.Listbox(produto.codigo, size = (50, 10), key = 'BOX')]
 
             [sg.Text("Produtos cadastrados: ")],
-            [sg.Listbox(dados, size=(30,5), key='lb_produtos')]
+            [sg.Listbox(dados, size=(30,5), key='lb_produtos')],
             [sg.Cancel("Voltar")]]
 
         self.__window = sg.Window("Produtos").Layout(layout)
-        self.__window.find_element('lb_produtos').Update(dados)
+
 
         self.open()
 
