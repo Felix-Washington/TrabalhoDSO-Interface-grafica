@@ -6,7 +6,9 @@ class FuncionarioDAO(AbstractDAO):
         super().__init__("funcionarios.pkl")
 
     def add(self, funcionario: Funcionario):
-        if (funcionario is not None) and (isinstance(funcionario, Funcionario)) and (isinstance((funcionario.cpf, str))):
+
+        if (funcionario is not None) and (isinstance(funcionario, Funcionario)) and (isinstance(funcionario.cpf, int)):
+            print("teste")
             super().add(funcionario.cpf, funcionario)
 
     def get(self, key: int):

@@ -7,15 +7,12 @@ class TelaCarrinho(AbstractTela):
         self.__controlador = controlador_carrinho
         self.__window = None
 
-
-
-    def mostra_opcoes(self):
+    def mostra_opcoes(self, produtos, produtos_add):
         layout = [
-            # [sg.Menu(menu_def, tearoff=True)]
-            [sg.Text('Como funcionário você deseja?')],
-            [sg.Cancel("Voltar")],
-
-            [sg.Button("Logar"), sg.Button("Cadastrar")]]
+            [sg.Text("Lista de produtos")],
+            [sg.Listbox(values=produtos, size=(30, 5)), sg.Listbox(values=produtos_add, size=(30,5))],
+            [sg.Button("Finalizar compra")],
+            [sg.Button("Adicionar ao carrinho"), sg.Button("Remover do carrinho"), sg.Cancel("Voltar")]]
 
         self.__window = sg.Window("Realizar Compra").Layout(layout)
 
@@ -64,33 +61,13 @@ class TelaCarrinho(AbstractTela):
         return {"codigo": codigo, "quantidade": quantidade}
 
     def avisos(self, opcao: str):
-        self.limpa_tela()
+        dicionario = {
+            "produto_removido": "Produto removido com sucesso",
+            "compra_cancelada": "Compra cancelada!",
+            "produto_adicionado": "Produto adicionado",
+            "carrinho_vazio": "O carrinho está vazio",
+            "quantidade_insuficiente": "Quantidade insuficiente no estoque!",
+            "limpa_carrinho": "O carrinho foi esvaziado"
+        }
 
-        if opcao == "operacao_cancelada":
-            print("Operação cancelada!", "\n")
-
-        elif opcao == "compra_finalizada":
-            print("Compra finalizada com sucesso!", "\n")
-
-        elif opcao == "compra_cancelada":
-            print("Compra cancelada!", "\n")
-
-        elif opcao == "carrinho_vazio":
-            print("Não há produtos no carrinho!", "\n")
-
-        elif opcao == "quantidade_insuficiente":
-            print("Quantidade insuficiente no estoque!")
-
-        elif opcao == "codigo_invalido":
-            print("Digite um codigo valido")
-
-        elif opcao == "atualiza_produto":
-            print("Produto alterado com sucesso!")
-
-        elif opcao == "limpa_carrinho":
-            print("O carrinho foi esvaziado!")
-        elif opcao == "produto_removido":
-            print("Produto removido", "\n")
-
-        elif opcao == "produto_adicionado":
-            print("Produto adicionado", "\n")
+        sg.Popup(dicionario[opcao])

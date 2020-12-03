@@ -58,17 +58,11 @@ class TelaProduto(AbstractTela):
         return self.open()
         self.close()
 
-    def mostra_dados_cadastrados(self,dados):
-
+    def mostra_dados_cadastrados(self, dados):
         layout = [
-            # [sg.Menu(menu_def, tearoff=True)]
-            #[sg.Text("Codigo: "), sg.Text("Nome"), sg.Text("Valor"), sg.Text("Quantidade")],
-            #[sg.Text(lista_produtos.codigo)], [sg.Text(lista_produtos.nome)], [sg.Text(lista_produtos.codigo)],
-            #[sg.Listbox(produto.codigo, size = (50, 10), key = 'BOX')]
-
             [sg.Text("Produtos cadastrados: ")],
-            [sg.Listbox(values=dados, size=(30,5), key='lb_produtos')],
-            [sg.Cancel("Voltar")]]
+            [sg.Listbox(values=dados, size=(30, 5), key='lb_produtos')],
+            [sg.Button("Alterar produto"), sg.Button("Remover produto"), sg.Cancel("Voltar")]]
 
         self.__window = sg.Window("Produtos").Layout(layout)
         return self.open()
@@ -79,7 +73,16 @@ class TelaProduto(AbstractTela):
         return codigo
 
     def requisita_dado_atualizar(self):
-        print("------ATUALIZAR PRODUTO------")
+        layout = [
+            [sg.Text('Código: ', size=(20, 1)), sg.InputText()],
+            [sg.Text("Nome: ", size=(20, 1)), sg.InputText()],
+            [sg.Text("Valor: ", size=(20, 1)), sg.InputText()],
+            [sg.Text("Quantidade", size=(20, 2)), sg.InputText()],
+
+            [sg.Submit("Salvar"), sg.Cancel("Cancelar")]]
+
+        self.__window = sg.Window("Cadastro de produto").Layout(layout)
+
         codigo = self.le_numero_inteiro("Digite o codigo do produto que deseja atualizar: ", [])
         return codigo
 

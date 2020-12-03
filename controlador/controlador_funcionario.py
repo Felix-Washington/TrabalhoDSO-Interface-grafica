@@ -2,18 +2,18 @@ from controlador.abstract_controlador import AbstractControlador
 
 from tela.tela_funcionario import TelaFuncionario
 from entidade.funcionario import Funcionario
+from persistencia.funcionario_dao import FuncionarioDAO
 
 
 class ControladorFuncionario(AbstractControlador):
     def __init__(self, controlador):
-        self.__funcionarios = []
+        self.__funcionario_dao = FuncionarioDAO()
         self.__tela_funcionario = TelaFuncionario()
         self.__controlador_principal = controlador
         self.__funcionario_logado = None
         self.__exibe_tela = False
 
         self.__log_funcionario = False
-        self.base_dados_funcionario()
 
     def abre_tela_inicial(self):
         self.__exibe_tela = True
@@ -45,8 +45,7 @@ class ControladorFuncionario(AbstractControlador):
                 cpf = int(values[0])
                 senha = values[1]
                 encontrou = False
-
-                for um_funcionario in self.__funcionarios:
+                for um_funcionario in self.__funcionario_dao.get_all():
                     if cpf == um_funcionario.cpf and senha == um_funcionario.senha:
                         encontrou = True
                         break
@@ -74,20 +73,21 @@ class ControladorFuncionario(AbstractControlador):
                 self.__tela_funcionario.avisos("campo_vazio")
 
             else:
-                nome = values[0]
-                cpf = int(values[1])
-                senha = values[2]
-                for um_funcionario in self.__funcionarios:
+                values[1] = int(values[1])
+                encontrou = False
+                for um_funcionario in self.__funcionario_dao.get_all():
+                    if um_funcionario.cpf == values[1]:
+                        encontrou = True
 
-                    if um_funcionario.cpf == cpf:
-                        self.__tela_funcionario.avisos("usuario_ja_cadastrado")
-                        break
-                    else:
-                        funcionario = Funcionario(nome, cpf, senha)
-                        self.__funcionarios.append(funcionario)
-                        self.__tela_funcionario.avisos("cadastrar")
-                        tela_adiciona = False
-                        break
+                if encontrou:
+                    self.__tela_funcionario.avisos("usuario_ja_cadastrado")
+
+                else:
+                    funcionario = Funcionario(values[0], values[1], values[2])
+                    self.__funcionario_dao.add(funcionario)
+                    self.__tela_funcionario.avisos("cadastrar")
+                    tela_adiciona = False
+
 
             self.__tela_funcionario.close()
 
@@ -172,9 +172,9 @@ class ControladorFuncionario(AbstractControlador):
                 #self.__tela_funcionario.confirma_tela()
                 cpf = int(values[0])
                 senha = values[1]
-                for um_funcionario in self.__funcionarios:
+                for um_funcionario in self.__funcionario_dao.get_all():
                     if cpf == um_funcionario.cpf and senha == um_funcionario.senha:
-                        self.__funcionarios.remove(um_funcionario)
+                        self.__funcionario_dao.remove(um_funcionario)
                         self.__funcionario_logado = None
                         self.__tela_funcionario.avisos("remover")
 
@@ -188,20 +188,25 @@ class ControladorFuncionario(AbstractControlador):
             self.__tela_funcionario.close()
 
     def lista_clientes(self):
-        self.__tela_funcionario.mostra_clientes(self.__controlador_principal.controlador_cliente.lista_clientes())
+        dados = [
+
+        ]
+        for cliente in self.__controlador_principal.controlador_cliente.lista_clientes():
+            dados.append(cliente.nome + " "*30 + str(cliente.cpf))
+
+        button, values = self.__tela_funcionario.mostra_clientes(dados)
+
+        if button == "Voltar":
+            self.__tela_funcionario.close()
 
     def desloga(self):
-        opcao = self.__tela_funcionario.confirma_tela("pessoa", self.__funcionario_logado.nome)
-        if opcao == 1:
+
+        button, values = self.__tela_funcionario.confirma_tela("pessoa", self.__funcionario_logado.nome)
+        if button == "Sim":
             self.__log_funcionario = False
-            self.limpa_tela()
+            self.__funcionario_logado = None
 
-    def base_dados_funcionario(self):
-        funcionario = Funcionario("Felix", 123, "123")
-        self.__funcionarios.append(funcionario)
+            #self.__tela_funcionario.avisos("desloga")
 
-        funcionario = Funcionario("Dorival", 123456, "123654")
-        self.__funcionarios.append(funcionario)
 
-        funcionario = Funcionario("Franciele", 321654, "456")
-        self.__funcionarios.append(funcionario)
+        self.__tela_funcionario.close()

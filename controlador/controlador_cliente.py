@@ -6,15 +6,12 @@ from tela.nota_fiscal import NotaFiscal
 
 class ControladorCliente(AbstractControlador):
     def __init__(self, controlador):
-        self.cliente_dao = ClienteDAO
-        self.__clientes = []
+        self.__cliente_dao = ClienteDAO()
         self.__tela_cliente = TelaCliente()
         self.__controlador_principal = controlador
         self.__cliente_logado = None
         self.__tela_nota_fiscal = NotaFiscal
         self.__log_cliente = True
-
-        self.base_dados_cliente()
 
     @property
     def clientes(self):
@@ -56,14 +53,15 @@ class ControladorCliente(AbstractControlador):
                 senha = values[1]
                 encontrou = False
 
-                for um_cliente in self.__clientes:
+                cliente = None
+                for um_cliente in self.__cliente_dao.get_all():
                     if cpf == um_cliente.cpf and senha == um_cliente.senha:
                         encontrou = True
-
+                        cliente = um_cliente
                         #break
 
                 if encontrou:
-                    self.__cliente_logado = um_cliente
+                    self.__cliente_logado = cliente
                     self.cliente_opcoes()
                     tela_login = False
                 else:
@@ -85,20 +83,21 @@ class ControladorCliente(AbstractControlador):
                 self.__tela_cliente.avisos("campo_vazio")
 
             else:
-                nome = values[0]
-                cpf = int(values[1])
-                senha = values[2]
-                for um_cliente in self.__clientes:
-                    print(um_cliente.cpf, cpf)
-                    if um_cliente.cpf == cpf:
-                        self.__tela_cliente.avisos("usuario_ja_cadastrado")
+                values[1] = int(values[1])
+                encontrou = False
 
-                    else:
-                        cliente = Cliente(nome, cpf, senha)
-                        self.__clientes.append(cliente)
-                        self.__tela_cliente.avisos("cadastrar")
-                        tela_adiciona = False
-                        break
+                for um_cliente in self.__cliente_dao.get_all():
+                    if um_cliente.cpf == values[1]:
+                        encontrou = True
+
+                if encontrou:
+                    self.__tela_cliente.avisos("usuario_ja_cadastrado")
+                else:
+                    cliente = Cliente(values[0], values[1], values[2])
+                    self.__cliente_dao.add(cliente)
+                    self.__tela_cliente.avisos("cadastrar")
+                    tela_adiciona = False
+
 
             self.__tela_cliente.close()
 
@@ -122,8 +121,15 @@ class ControladorCliente(AbstractControlador):
             funcao_escolhida()
 
     def compra(self):
+        tela_compra = False
         self.__tela_cliente.close()
-        self.__controlador_principal.mostra_tela_carrinho()
+        while tela_compra:
+
+            button, values = self.__controlador_principal.mostra_tela_carrinho()
+
+
+            if button == "Cancelar compra":
+                tela_compra = False
 
     def ver_cadastro(self):
         tela_cadastro = True
@@ -183,24 +189,30 @@ class ControladorCliente(AbstractControlador):
             else:
                 cpf = int(values[0])
                 senha = values[1]
-                for um_cliente in self.__clientes:
+                cliente = None
+                for um_cliente in self.__cliente_dao.get_all():
                     if cpf == um_cliente.cpf and senha == um_cliente.senha:
-                        self.__clientes.remove(um_cliente)
+                        self.__cliente_dao.remove(um_cliente)
                         self.__cliente_logado = None
                         self.__tela_cliente.avisos("remover")
-
                         self.__log_cliente = False
                         tela_remove = False
+                        cliente = um_cliente
+
+
                         break
 
-                if cpf != um_cliente.cpf or senha != um_cliente.senha:
+                if cpf != cliente.cpf or senha != cliente.senha:
                     self.__tela_cliente.avisos("dados_invalidos")
 
             self.__tela_cliente.close()
 
     def lista_nota_fiscal(self):
 
-        self.__tela_nota_fiscal.relatorio_compras(self.__cliente_logado.notas_fiscais)
+        button, values = self.__tela_cliente.mostra_notas_fiscais(self.__cliente_logado.notas_fiscais)
+
+        if button == "Voltar":
+            self.__tela_cliente.close()
 
     def desloga(self):
 
@@ -209,20 +221,8 @@ class ControladorCliente(AbstractControlador):
             self.__log_cliente = False
             self.__cliente_logado = None
             self.__tela_cliente.avisos("desloga")
-            self.__tela_cliente.close()
 
-
-
-    def base_dados_cliente(self):
-        cliente = Cliente("Lucas", 123, "123")
-        self.__clientes.append(cliente)
-
-        cliente = Cliente("Jade", 123456, "123654")
-        self.__clientes.append(cliente)
-
-        cliente = Cliente("Mariana", 321654, "456")
-        self.__clientes.append(cliente)
+        self.__tela_cliente.close()
 
     def lista_clientes(self):
-        for cliente in self.__clientes:
-            self.__tela_cliente.mostra_clientes(cliente.nome, cliente.cpf)
+        return self.__cliente_dao.get_all()

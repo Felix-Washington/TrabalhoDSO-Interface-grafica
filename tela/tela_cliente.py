@@ -20,12 +20,6 @@ class TelaCliente(AbstractTela):
     def close(self):
         self.__window.Close()
 
-    def mostra_clientes(self, nome, cpf):
-        print("--------------------------------------------")
-        print("Nome:", nome.lower().capitalize())
-        print("CPF:", cpf)
-        print("--------------------------------------------")
-
     def dados_cadastro(self):
         layout = [
             # [sg.Menu(menu_def, tearoff=True)]
@@ -119,13 +113,12 @@ class TelaCliente(AbstractTela):
 
         return self.open()
 
-
     def mostra_notas_fiscais(self, notas_fiscais):
         layout = [
             # [sg.Menu(menu_def, tearoff=True)]
             [sg.Text("Notas Fiscais", size=(20, 1))],
-
-            [sg.Cancel("Button")]]
+            [sg.Listbox(values=notas_fiscais, size=(30, 5))],
+            [sg.Cancel("Voltar")]]
 
         self.__window = sg.Window("Notas fiscais").Layout(layout)
 

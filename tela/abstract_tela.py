@@ -60,7 +60,7 @@ class AbstractTela(ABC):
             "menu": "Tem certeza que quer fechar o sistema?",
             "atualiza": "Tem certeza que deseja mudar?",
             "volta": "Tem certeza que deseja voltar?",
-            "remove_cadastro": "Tem certeza que deseja remover o cadastro?",
+            "remove_cadastro": "Tem certeza que deseja remover seu cadastro?",
             "finaliza_compra": "Tem certeza que deseja finalizar a compra?",
         }
         layout = [

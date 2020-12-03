@@ -6,7 +6,7 @@ class ClienteDAO(AbstractDAO):
         super().__init__("clientes.pkl")
 
     def add(self, cliente: Cliente):
-        if (cliente is not None) and (isinstance(cliente, Cliente)) and (isinstance((cliente.cpf, str))):
+        if (cliente is not None) and (isinstance(cliente, Cliente)) and (isinstance(cliente.cpf, int)):
             super().add(cliente.cpf, cliente)
 
     def get(self, key: int):

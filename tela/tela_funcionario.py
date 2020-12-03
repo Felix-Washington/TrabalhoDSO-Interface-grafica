@@ -100,7 +100,7 @@ class TelaFuncionario(AbstractTela):
     def tela_funcionario_logado(self, nome_funcionario: str):
         layout = [
             # [sg.Menu(menu_def, tearoff=True)]
-            [sg.Text("Olá o que deseja?")],
+            [sg.Text("Olá"), sg.Text(nome_funcionario), sg.Text("o que deseja?", size=(30,1))],
             [sg.Button("Cadastro")],
             [sg.Button("Ver Estoque"), sg.Button("Lista de clientes")],
             [sg.Button("Sair")]]
@@ -109,19 +109,21 @@ class TelaFuncionario(AbstractTela):
 
         return self.open()
 
-    def mostra_clientes(self, clientes: []):
+    def mostra_clientes(self, dados):
         layout = [
-            # [sg.Menu(menu_def, tearoff=True)]
-            [sg.Text("Clientes")],
-
-            [sg.Button("Voltar")]]
+            [sg.Text("Clientes cadastrados: ")],
+            [sg.Text("Nome:", size=(16, 1)), sg.Text("Cpf:")],
+            [sg.Listbox(values=dados, size=(30, 5))],
+            [sg.Cancel("Voltar", size=(30, 1))]]
 
         self.__window = sg.Window("Lista de clientes").Layout(layout)
+        return self.open()
 
     def avisos(self, opcao: str):
         dicionario = {
             "cadastrar": "Funcionário cadastrado com sucesso!",
             "remover": "Funcionário removido com sucesso!",
+            "desloga": "Usuário deslogado com sucesso!",
             "dados_invalidos": "Erro! Digite o cpf ou a senha corretamente!",
             "atualiza": "Funcionário alterado com sucesso!",
             "usuario_ja_cadastrado": "Funcionário já cadastrado",

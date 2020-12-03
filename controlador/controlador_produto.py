@@ -21,7 +21,6 @@ class ControladorProduto(AbstractControlador):
             button, values = self.__tela_produto.requisita_dados_cadastro()
 
             if button == "Cancelar":
-                print(button)
                 self.__tela_produto.avisos("operacao_cancelada")
                 tela_adiciona = False
 
@@ -36,15 +35,15 @@ class ControladorProduto(AbstractControlador):
                         ja_existe = True
                         break
                 if not ja_existe:
-                    novo_produto = Produto(values[0], values[1], values[2], values[3])
+                    novo_produto = Produto(int(values[0]), values[1], values[2], values[3])
                     self.__produto_dao.add(novo_produto)
-
+                    tela_adiciona = False
                     self.__tela_produto.avisos("produto_cadastrado")
+
                 else:
                     self.__tela_produto.avisos("produto_ja_cadastrado")
 
             self.__tela_produto.close()
-
 
     def remove(self):
         codigo = self.__tela_produto.requisita_dado_remover()
@@ -73,15 +72,26 @@ class ControladorProduto(AbstractControlador):
             self.__tela_produto.avisos("codigo_invalido")
 
     def lista(self):
-        #button, values = self.__tela_produto.mostra_dados_cadastrados()
-        dados = []
-        for produto in self.__produto_dao.get_all():
-            dados.append(str(produto.codigo) +'-'+ produto.nome +'-'+ str(produto.valor) +'-'+
-                                                         str(produto.quantidade))
+        tela_lista = True
 
-            #sg.Listbox(values=(dados), size=(30, 5))
-        #return dados
-        self.__tela_produto.mostra_dados_cadastrados(dados)
+        while tela_lista:
+            dados = []
+            for produto in self.__produto_dao.get_all():
+                dados.append(str(produto.codigo) +'-'+ produto.nome +'-'+ str(produto.valor) +'-'+
+                                                             str(produto.quantidade))
+
+            button, values = self.__tela_produto.mostra_dados_cadastrados(dados)
+            self.__tela_produto.close()
+            if button == "Voltar":
+                tela_lista = False
+            elif button == "Alterar produto":
+                self.atualiza()
+
+            elif button == "Remover produto":
+                self.remove()
+
+
+
 
     def abre_tela_inicial(self):
         lista_opcoes = {

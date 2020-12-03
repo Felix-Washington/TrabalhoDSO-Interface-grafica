@@ -19,4 +19,4 @@ class NotaFiscal:
       print("Código: ", produto.codigo, "Nome: ", produto.nome, "Valor: ", produto.valor ,"Quantidade: ", produto.quantidade)
       valor_total += produto.valor * produto.quantidade
 
-
+    return produtos
