@@ -6,9 +6,9 @@ class AbstractDAO(ABC):
         self.__datasource = datasource
         self.__object_cache = {}
         try:
-            self.load()
+            self.__load()
         except FileNotFoundError:
-            self.dump()
+            self.__dump()
     def __dump(self):
         pickle.dump(self.__object_cache, open(self.__datasource,'wb'))
     def __load(self):

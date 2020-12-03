@@ -1,13 +1,15 @@
-from persistencia.abstract_dao import AbstractDAO
 from entidade.produto import Produto
+from persistencia.abstract_dao import AbstractDAO
+from entidade.carrinho import Carrinho
 
-class ProdutoDAO(AbstractDAO):
+
+class CarrinhoDAO(AbstractDAO):
     def __init__(self):
-        super().__init__("produtos.pkl")
+        super().__init__("carrinho.pkl")
 
     def add(self, produto: Produto):
-        if (produto is not None) and (isinstance(produto, Produto)) and (isinstance(produto.codigo, int)):
-            super().add(produto.codigo, produto)
+        if (produto is not None) and (isinstance(produto, Produto)):
+            super().add(produto.codigo, Produto)
 
     def get(self, key: int):
         if isinstance(key, int):

@@ -1,5 +1,5 @@
-from tela.abstract_tela import AbstractTela
 import PySimpleGUI as sg
+from tela.abstract_tela import AbstractTela
 
 
 class TelaProduto(AbstractTela):
@@ -26,13 +26,18 @@ class TelaProduto(AbstractTela):
 
         ]
 
+
         self.__window = sg.Window("Produtos").Layout(layout)
+
+
 
         return self.open()
 
     def open(self):
         button, values = self.__window.Read()
         return button, values
+        if Button == "Listar produtos":
+            controlador.controlador_produto.lista()
 
     def close(self):
         self.__window.Close()
@@ -49,18 +54,23 @@ class TelaProduto(AbstractTela):
 
         self.__window = sg.Window("Cadastro de produto").Layout(layout)
 
+
         return self.open()
 
-    def mostra_dados_cadastrados(self, lista_produtos: list):
+    def mostra_dados_cadastrados(self,dados):
+
         layout = [
             # [sg.Menu(menu_def, tearoff=True)]
-            [sg.Text("Codigo: "), sg.Text("Nome"), sg.Text("Valor"), sg.Text("Quantidade")],
-            [sg.Text(lista_produtos.codigo)], [sg.Text(lista_produtos.nome)], [sg.Text(lista_produtos.codigo)],
+            #[sg.Text("Codigo: "), sg.Text("Nome"), sg.Text("Valor"), sg.Text("Quantidade")],
+            #[sg.Text(lista_produtos.codigo)], [sg.Text(lista_produtos.nome)], [sg.Text(lista_produtos.codigo)],
+            #[sg.Listbox(produto.codigo, size = (50, 10), key = 'BOX')]
 
+            [sg.Text("Produtos cadastrados: ")],
+            [sg.Listbox(dados, size=(30,5), key='lb_produtos')]
             [sg.Cancel("Voltar")]]
 
-
         self.__window = sg.Window("Produtos").Layout(layout)
+        self.__window.find_element('lb_produtos').Update(dados)
 
         self.open()
 

@@ -2,13 +2,14 @@ from tela.tela_produto import TelaProduto
 from entidade.produto import Produto
 from controlador.abstract_controlador import AbstractControlador
 from persistencia.produto_dao import ProdutoDAO
+import PySimpleGUI as sg
 
 class ControladorProduto(AbstractControlador):
 
     def __init__(self):
         self.__produto_dao = ProdutoDAO()
         self.__tela_produto = TelaProduto(self)
-        self.base_dados_produto()
+
     @property
     def produtos(self):
         return self.__produto_dao.get_all()
@@ -71,9 +72,15 @@ class ControladorProduto(AbstractControlador):
             self.__tela_produto.avisos("codigo_invalido")
 
     def lista(self):
+        #button, values = self.__tela_produto.mostra_dados_cadastrados()
+        dados = []
         for produto in self.__produto_dao.get_all():
-            self.__tela_produto.mostra_dados_cadastrados(produto.codigo, produto.nome, produto.valor,
-                                                         produto.quantidade)
+            dados.append(str(produto.codigo) +'-'+ produto.nome +'-'+ str(produto.valor) +'-'+
+                                                         str(produto.quantidade))
+
+            #sg.Listbox(values=(dados), size=(30, 5))
+            return dados
+        self.__tela_produto.mostra_dados_cadastrados(dados)
 
     def abre_tela_inicial(self):
         lista_opcoes = {
@@ -92,12 +99,3 @@ class ControladorProduto(AbstractControlador):
         self.__tela_produto.close()
         self.__exibe_tela = False
 
-    def base_dados_produto(self):
-        produto = Produto(101, "Carrinho", 50, 3)
-        self.__produtos.append(produto)
-
-        produto = Produto(102, "Boneca", 30, 5)
-        self.__produtos.append(produto)
-
-        produto = Produto(103, "Urso de pelúcia", 25, 5)
-        self.__produtos.append(produto)
