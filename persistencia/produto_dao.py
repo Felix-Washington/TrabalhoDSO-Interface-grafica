@@ -13,6 +13,10 @@ class ProdutoDAO(AbstractDAO):
         if isinstance(key, int):
             return super().get(key)
 
+
     def remove(self, key):
         if isinstance(key, int):
             super().remove(key)
+
+    def att(self, values):
+        pass

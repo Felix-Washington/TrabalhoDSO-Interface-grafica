@@ -153,7 +153,7 @@ class ControladorCliente(AbstractControlador):
 
         while tela_atualiza:
             button, values = self.__tela_cliente.tela_atualiza_cadastro()
-
+            self.__cliente_dao.att(self.__cliente_logado)
             nome = values[0]
             senha = values[1]
             if button == "Cancelar":

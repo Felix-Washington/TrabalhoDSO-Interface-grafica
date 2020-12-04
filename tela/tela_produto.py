@@ -60,7 +60,7 @@ class TelaProduto(AbstractTela):
     def mostra_dados_cadastrados(self, dados):
         layout = [
             [sg.Text("Produtos cadastrados: ")],
-            [sg.Listbox(values=dados, size=(30, 5), key='lb_produtos')],
+            [sg.Listbox(values=dados, size=(30, 5))],
             [sg.Button("Alterar produto"), sg.Button("Remover produto"), sg.Cancel("Voltar")]]
 
         self.__window = sg.Window("Produtos").Layout(layout)
@@ -74,7 +74,6 @@ class TelaProduto(AbstractTela):
 
     def requisita_dado_atualizar(self):
         layout = [
-            [sg.Text('Código: ', size=(20, 1)), sg.InputText(key='codigo')],
             [sg.Text("Nome: ", size=(20, 1)), sg.InputText(key='nome')],
             [sg.Text("Valor: ", size=(20, 1)), sg.InputText(key='valor')],
             [sg.Text("Quantidade", size=(20, 2)), sg.InputText(key='quantidade')],

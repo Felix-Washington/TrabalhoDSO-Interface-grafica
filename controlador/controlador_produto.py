@@ -58,9 +58,10 @@ class ControladorProduto(AbstractControlador):
             #else:
              #   self.__tela_produto.avisos("codigo_invalido")
 
-    def atualiza(self,dados_obj):
-        #existe = False
+    def atualiza(self, codigo_produto_selecionado):
         button, values = self.__tela_produto.requisita_dado_atualizar()
+        print(values)
+
         codigo = values['codigo']
         nome = values['nome']
         valor = values['valor']
@@ -70,7 +71,19 @@ class ControladorProduto(AbstractControlador):
         elif values['codigo'] == "" or values['nome'] == "" or values['valor'] == "" or values['quantidade'] == "":
             self.__tela_produto.avisos("campo_vazio")
         else:
-            dados_obj = (int(values['codigo']),values['nome'],values['valor'],values['quantidade'])
+            encontrou = False
+
+            for produto in self.__produto_dao.get_all():
+                if produto.codigo == codigo_produto_selecionado:
+                    encontrou = True
+
+                    #break
+            if encontrou:
+                self.__produto_dao.att(values)
+
+            else:
+                self.__tela_produto.avisos("codigo_invalido")
+                #dados_obj = (int(values['codigo']),values['nome'],values['valor'],values['quantidade'])
             self.__tela_produto.close()
 
 
@@ -102,12 +115,14 @@ class ControladorProduto(AbstractControlador):
                                                              str(produto.quantidade))
 
             button, values = self.__tela_produto.mostra_dados_cadastrados(dados)
+            print(values[0])
             self.__tela_produto.close()
             if button == "Voltar":
                 tela_lista = False
             elif button == "Alterar produto":
-                dados_obj = values['lb_produtos'][0]
-                self.atualiza(dados_obj)
+                #dados_obj = values['lb_produtos'][0]
+
+                self.atualiza(values[0])
 
             elif button == "Remover produto":
                 if dados:
