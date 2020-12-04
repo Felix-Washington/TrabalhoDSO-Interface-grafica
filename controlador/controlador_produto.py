@@ -47,7 +47,7 @@ class ControladorProduto(AbstractControlador):
 
     def remove(self,dados):
         self.__produto_dao.remove(dados)
-        self.__window.find_element('list_produtos').Update(dados)
+        #self.__window.find_element('list_produtos').Update(dados)
         #codigo = self.__tela_produto.requisita_dado_remover()
         #for produto in self.__produto_dao.get_all():
             #if produto.codigo == dados_obj:
@@ -58,8 +58,8 @@ class ControladorProduto(AbstractControlador):
             #else:
              #   self.__tela_produto.avisos("codigo_invalido")
 
-    def atualiza(self,dados_obj):
-        #existe = False
+    def atualiza(self, dados_obj):
+
         button, values = self.__tela_produto.requisita_dado_atualizar()
         codigo = values['codigo']
         nome = values['nome']
@@ -67,30 +67,18 @@ class ControladorProduto(AbstractControlador):
         quantidade = values['quantidade']
         if button == "Cancelar":
             self.__tela_produto.close()
-        elif values['codigo'] == "" or values['nome'] == "" or values['valor'] == "" or values['quantidade'] == "":
+        elif codigo == "" or nome == "" or valor == "" or quantidade == "":
             self.__tela_produto.avisos("campo_vazio")
         else:
-            dados_obj = (int(values['codigo']),values['nome'],values['valor'],values['quantidade'])
-            self.__tela_produto.close()
-
-
-
-
-
-    #def alterar(self):
-
-        #for produto in self.__produto_dao.get_all():
-            #if produto.codigo == dados.values(codigo):
-                #existe = True
-        #if existe:
-
-            #dados = self.__tela_produto.atualiza_produto()
-            #produto.nome = dados["nome"]
-            #produto.valor = dados["valor"]
-            #produto.quantidade = dados["quantidade"]
-            #self.__tela_produto.avisos("atualiza_produto")
-        #else:
-            #self.__tela_produto.avisos("codigo_invalido")
+            if dados_obj:
+            #dados = [codigo,nome,valor,quantidade]
+                for obj in self.__produto_dao.get_all():
+                    if obj.codigo == codigo:
+                        obj.nome = nome
+                        obj.valor = valor
+                        obj.quantidade = quantidade
+            #self.__window.FindElement('lb_produtos').Update(dados)
+                self.__tela_produto.close()
 
     def lista(self):
         tela_lista = True
@@ -113,9 +101,6 @@ class ControladorProduto(AbstractControlador):
                 if dados:
                     dados_obj = values['lb_produtos'][0]
                     self.remove(dados)
-
-
-
 
     def abre_tela_inicial(self):
         lista_opcoes = {

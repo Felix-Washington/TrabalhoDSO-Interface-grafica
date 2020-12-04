@@ -1,7 +1,9 @@
 from abc import ABC, abstractmethod
 import os
 
+
 class AbstractControlador(ABC):
+
   @abstractmethod
   def __init__(self):
     self.__exibe_tela = True
@@ -23,12 +25,12 @@ class AbstractControlador(ABC):
 
 
   @abstractmethod
-  def remove(self):
+  def remove(self,dados):
     pass
 
 
   @abstractmethod
-  def atualiza(self):
+  def atualiza(self,dados_obj):
     pass
 
 
