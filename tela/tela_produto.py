@@ -6,7 +6,6 @@ class TelaProduto(AbstractTela):
     def __init__(self, controlador_produto):
         self.__controle = controlador_produto
         self.__window = None
-
         self.init_components()
 
     def init_components(self):
@@ -26,11 +25,7 @@ class TelaProduto(AbstractTela):
 
         ]
 
-
         self.__window = sg.Window("Produtos").Layout(layout)
-
-
-
         return self.open()
 
     def open(self):
@@ -38,6 +33,10 @@ class TelaProduto(AbstractTela):
         return button, values
         if Button == "Listar produtos":
             controlador.controlador_produto.lista()
+            dados_obj = values['lb_produtos'][0]
+
+
+
 
     def close(self):
         self.__window.Close()
@@ -67,6 +66,7 @@ class TelaProduto(AbstractTela):
         self.__window = sg.Window("Produtos").Layout(layout)
         return self.open()
 
+
     def requisita_dado_remover(self):
         print("------REMOVER PRODUTO------")
         codigo = self.le_numero_inteiro("Digite o codigo do produto que deseja remover: ", [])
@@ -74,17 +74,17 @@ class TelaProduto(AbstractTela):
 
     def requisita_dado_atualizar(self):
         layout = [
-            [sg.Text('Código: ', size=(20, 1)), sg.InputText()],
-            [sg.Text("Nome: ", size=(20, 1)), sg.InputText()],
-            [sg.Text("Valor: ", size=(20, 1)), sg.InputText()],
-            [sg.Text("Quantidade", size=(20, 2)), sg.InputText()],
+            [sg.Text('Código: ', size=(20, 1)), sg.InputText(key='codigo')],
+            [sg.Text("Nome: ", size=(20, 1)), sg.InputText(key='nome')],
+            [sg.Text("Valor: ", size=(20, 1)), sg.InputText(key='valor')],
+            [sg.Text("Quantidade", size=(20, 2)), sg.InputText(key='quantidade')],
 
-            [sg.Submit("Salvar"), sg.Cancel("Cancelar")]]
+            [sg.Submit("Salvar Alteração"), sg.Cancel("Cancelar")]]
 
-        self.__window = sg.Window("Cadastro de produto").Layout(layout)
+        self.__window = sg.Window("Atualização de produto").Layout(layout)
 
-        codigo = self.le_numero_inteiro("Digite o codigo do produto que deseja atualizar: ", [])
-        return codigo
+        #codigo = self.le_numero_inteiro("Digite o codigo do produto que deseja atualizar: ", [])
+        return self.open()
 
     def atualiza_produto(self):
         nome = self.verifica_palavra("Digite o novo nome: ")
