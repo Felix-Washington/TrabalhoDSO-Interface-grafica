@@ -6,7 +6,6 @@ class AbstractTela(ABC):
 
     def __init__(self):
         pass
-        #self.__window_confirmacao == None
 
 
     def le_numero_inteiro(self, mensagem: str, opcoes_validas: []):
@@ -56,7 +55,7 @@ class AbstractTela(ABC):
     def limpa_tela(self):
         pass
 
-    def confirma_tela(self, entidade: str, nome: str):
+    def confirma_tela(self, entidade: str):
         tipos_verificacoes = {
             "pessoa": "Tem certeza que deseja sair da sua conta?",
             "menu": "Tem certeza que quer fechar o sistema?",
@@ -71,4 +70,5 @@ class AbstractTela(ABC):
         ]
         window = sg.Window("Confirmação").Layout(layout)
         button, values = window.Read()
+        window.Close()
         return button, values

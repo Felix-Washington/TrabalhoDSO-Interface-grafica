@@ -13,12 +13,6 @@ class AbstractControlador(ABC):
   def abre_tela_inicial(self):
     pass
 
-
-  @abstractmethod
-  def finaliza_tela(self):
-    pass
-
-
   @abstractmethod
   def adiciona(self):
     pass
@@ -36,7 +30,3 @@ class AbstractControlador(ABC):
 
   def lista(self):
     pass
-
-
-  def limpa_tela(self):
-    os.system('cls' if os.name == 'nt' else 'clear')

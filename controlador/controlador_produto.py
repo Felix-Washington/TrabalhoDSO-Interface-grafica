@@ -12,7 +12,12 @@ class ControladorProduto(AbstractControlador):
 
     @property
     def produtos(self):
-        return self.__produto_dao.get_all()
+        lista_produtos = []
+        for produto in  self.__produto_dao.get_all():
+            lista_produtos.append(produto)
+            print(produto.codigo)
+        return self.__produto_dao.get_all
+
 
     def adiciona(self):
         tela_adiciona = True
@@ -72,11 +77,12 @@ class ControladorProduto(AbstractControlador):
         self.__tela_produto.close()
 
     def lista_produtos_disponiveis(self):
-        produtos = []
+        lista_produtos = []
         for produto in self.__produto_dao.get_all():
-            produtos.append('{:3d}'.format(produto.codigo) + '-' + produto.nome + '-' + str(produto.valor) + '-' +
+            lista_produtos.append('{:3d}'.format(produto.codigo) + '-' + produto.nome + '-' + str(produto.valor) + '-' +
                          str(produto.quantidade))
-        return produtos
+        return lista_produtos
+
     def lista(self):
         tela_lista = True
 
@@ -99,6 +105,14 @@ class ControladorProduto(AbstractControlador):
                 #dados_obj = values['lb_produtos'][0]
                 self.remove(int(values[0][0][0:3]))
 
+    def verifica_quantidade(self, key):
+        produto = self.__produto_dao.get(key)
+        print(produto.codigo)
+        print(type(produto.quantidade))
+        if int(produto.quantidade) > 0:
+            return True
+        else:
+            return False
 
     def abre_tela_inicial(self):
         lista_opcoes = {

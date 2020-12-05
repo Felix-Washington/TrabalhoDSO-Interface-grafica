@@ -22,7 +22,12 @@ class ControladorCarrinho(AbstractControlador):
             self.__tela_carrinho.avisos("carrinho_vazio")
 
     def adiciona(self, produto_selecionado):
-        self.__produtos_carrinho.append(produto_selecionado)
+        pode_add = self.__controlador_principal.controlador_produto.verifica_quantidade(int(produto_selecionado[0][0:3]))
+        if pode_add:
+            self.__produtos_carrinho.append(produto_selecionado)
+
+        else:
+            self.__tela_carrinho.avisos("quantidade_insuficiente")
 
     def verifica_duplicidade(self, dados):
         existe = False
@@ -49,10 +54,18 @@ class ControladorCarrinho(AbstractControlador):
                 self.__tela_carrinho.avisos("codigo_invalido")
 
     def remove(self, produto_selecionado):
+        print(self.__produtos_carrinho)
         if self.__produtos_carrinho != []:
             for produto in self.__produtos_carrinho:
                 if produto_selecionado == produto:
-                    self.__produtos_carrinho.remove(produto_selecionado)
+                    if produto.quantidade > 0:
+                        produto.quantidade -= 1
+
+                    else:
+                        self.__produtos_carrinho.remove(produto_selecionado)
+
+        else:
+            self.__tela_carrinho.avisos("carrinho_vazio")
 
     def atualiza(self):
         existe = False

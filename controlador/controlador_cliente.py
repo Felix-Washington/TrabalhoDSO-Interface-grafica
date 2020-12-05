@@ -124,7 +124,6 @@ class ControladorCliente(AbstractControlador):
 
         self.__controlador_principal.mostra_tela_carrinho()
 
-
     def ver_cadastro(self):
         tela_cadastro = True
 
@@ -210,7 +209,7 @@ class ControladorCliente(AbstractControlador):
 
     def desloga(self):
 
-        button, values = self.__tela_cliente.confirma_tela("pessoa", self.__cliente_logado.nome)
+        button, values = self.__tela_cliente.confirma_tela("pessoa")
         if button == "Sim":
             self.__log_cliente = False
             self.__cliente_logado = None

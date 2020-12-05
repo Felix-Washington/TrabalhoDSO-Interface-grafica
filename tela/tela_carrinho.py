@@ -38,7 +38,8 @@ class TelaCarrinho(AbstractTela):
             "carrinho_vazio": "O carrinho está vazio",
             "quantidade_insuficiente": "Quantidade insuficiente no estoque!",
             "limpa_carrinho": "O carrinho foi esvaziado",
-            "campo_vazio": "Digite um valor"
+            "campo_vazio": "Digite um valor",
+            "selecionar_produto": "Selecione um produto"
         }
 
         sg.Popup(dicionario[opcao])
