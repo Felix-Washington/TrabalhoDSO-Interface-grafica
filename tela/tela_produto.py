@@ -58,6 +58,7 @@ class TelaProduto(AbstractTela):
         self.close()
 
     def mostra_dados_cadastrados(self, dados):
+        #pegar os 3 primeiros dígitos da string e transformar num int
         layout = [
             [sg.Text("Produtos cadastrados: ")],
             [sg.Listbox(values=dados, size=(30, 5))],
@@ -72,11 +73,12 @@ class TelaProduto(AbstractTela):
         codigo = self.le_numero_inteiro("Digite o codigo do produto que deseja remover: ", [])
         return codigo
 
-    def requisita_dado_atualizar(self):
+    def requisita_dado_atualizar(self, nome= "", valor = "", quantidade= ""):
+
         layout = [
-            [sg.Text("Nome: ", size=(20, 1)), sg.InputText(key='nome')],
-            [sg.Text("Valor: ", size=(20, 1)), sg.InputText(key='valor')],
-            [sg.Text("Quantidade", size=(20, 2)), sg.InputText(key='quantidade')],
+            [sg.Text("Nome: ", size=(20, 1)), sg.InputText(nome, key='nome')],
+            [sg.Text("Valor: ", size=(20, 1)), sg.InputText(valor, key='valor')],
+            [sg.Text("Quantidade", size=(20, 2)), sg.InputText(quantidade, key='quantidade')],
 
             [sg.Submit("Salvar Alteração"), sg.Cancel("Cancelar")]]
 

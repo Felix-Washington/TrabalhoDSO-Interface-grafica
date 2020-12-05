@@ -18,6 +18,8 @@ class TelaCliente(AbstractTela):
         return button, values
 
     def close(self):
+
+        #super().close()
         self.__window.Close()
 
     def dados_cadastro(self):

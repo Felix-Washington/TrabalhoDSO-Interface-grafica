@@ -59,32 +59,31 @@ class ControladorProduto(AbstractControlador):
              #   self.__tela_produto.avisos("codigo_invalido")
 
     def atualiza(self, codigo_produto_selecionado):
-        button, values = self.__tela_produto.requisita_dado_atualizar()
+        #print(type(codigo_produto_selecionado))
+        #print(codigo_produto_selecionado[0:3])
+
+        produto = self.__produto_dao.get(codigo_produto_selecionado)
+
+        #print(nome)
+        #buscar no controlar o produto pelo código
+        #ADD substitui caso a chave for a mesma
+        button, values = self.__tela_produto.requisita_dado_atualizar(produto.nome, produto.valor, produto.quantidade)
         print(values)
 
-        codigo = values['codigo']
-        nome = values['nome']
-        valor = values['valor']
-        quantidade = values['quantidade']
+
         if button == "Cancelar":
             self.__tela_produto.close()
-        elif values['codigo'] == "" or values['nome'] == "" or values['valor'] == "" or values['quantidade'] == "":
+        elif values['nome'] == "" or values['valor'] == "" or values['quantidade'] == "":
             self.__tela_produto.avisos("campo_vazio")
         else:
-            encontrou = False
+            produto.nome = values['nome']
+            produto.valor = values['valor']
+            produto.quantidade = values['quantidade']
 
-            for produto in self.__produto_dao.get_all():
-                if produto.codigo == codigo_produto_selecionado:
-                    encontrou = True
 
-                    #break
-            if encontrou:
-                self.__produto_dao.att(values)
+            self.__produto_dao.add(produto)
 
-            else:
-                self.__tela_produto.avisos("codigo_invalido")
-                #dados_obj = (int(values['codigo']),values['nome'],values['valor'],values['quantidade'])
-            self.__tela_produto.close()
+        self.__tela_produto.close()
 
 
 
@@ -111,18 +110,18 @@ class ControladorProduto(AbstractControlador):
         while tela_lista:
             dados = []
             for produto in self.__produto_dao.get_all():
-                dados.append(str(produto.codigo) +'-'+ produto.nome +'-'+ str(produto.valor) +'-'+
+                dados.append('{:3d}'.format(produto.codigo) +'-'+ produto.nome +'-'+ str(produto.valor) +'-'+
                                                              str(produto.quantidade))
 
             button, values = self.__tela_produto.mostra_dados_cadastrados(dados)
-            print(values[0])
+            print(values)
             self.__tela_produto.close()
             if button == "Voltar":
                 tela_lista = False
             elif button == "Alterar produto":
                 #dados_obj = values['lb_produtos'][0]
-
-                self.atualiza(values[0])
+                #primeira posição [0] é do dicionário, a segunda posição [0] é pra pegar o item selecionado do listbox, e o [0:3] é para pegar somente o código do produto
+                self.atualiza(int(values[0][0][0:3]))
 
             elif button == "Remover produto":
                 if dados:

@@ -3,9 +3,11 @@ import PySimpleGUI as sg
 
 
 class AbstractTela(ABC):
-    @abstractmethod
+
     def __init__(self):
         pass
+        #self.__window_confirmacao == None
+
 
     def le_numero_inteiro(self, mensagem: str, opcoes_validas: []):
         while True:
