@@ -50,25 +50,9 @@ class ControladorProduto(AbstractControlador):
         self.__produto_dao.remove(produto.codigo)
         self.__tela_produto.avisos("remove_produto")
 
-        #codigo = self.__tela_produto.requisita_dado_remover()
-        #for produto in self.__produto_dao.get_all():
-            #if produto.codigo == dados_obj:
-             #   produto_remover = produto
-              #  self.__produto_dao.remove(produto_remover)
-               # self.__tela_produto.avisos("produto_removido")
-                #break
-            #else:
-             #   self.__tela_produto.avisos("codigo_invalido")
-
     def atualiza(self, codigo_produto_selecionado):
-        #print(type(codigo_produto_selecionado))
-        #print(codigo_produto_selecionado[0:3])
-
         produto = self.__produto_dao.get(codigo_produto_selecionado)
 
-        #print(nome)
-        #buscar no controlar o produto pelo código
-        #ADD substitui caso a chave for a mesma
         button, values = self.__tela_produto.requisita_dado_atualizar(produto.nome, produto.valor, produto.quantidade)
         print(values)
 
@@ -87,24 +71,6 @@ class ControladorProduto(AbstractControlador):
 
         self.__tela_produto.close()
 
-
-
-
-
-    #def alterar(self):
-
-        #for produto in self.__produto_dao.get_all():
-            #if produto.codigo == dados.values(codigo):
-                #existe = True
-        #if existe:
-
-            #dados = self.__tela_produto.atualiza_produto()
-            #produto.nome = dados["nome"]
-            #produto.valor = dados["valor"]
-            #produto.quantidade = dados["quantidade"]
-            #self.__tela_produto.avisos("atualiza_produto")
-        #else:
-            #self.__tela_produto.avisos("codigo_invalido")
     def lista_produtos_disponiveis(self):
         produtos = []
         for produto in self.__produto_dao.get_all():
@@ -132,8 +98,6 @@ class ControladorProduto(AbstractControlador):
             elif button == "Remover produto":
                 #dados_obj = values['lb_produtos'][0]
                 self.remove(int(values[0][0][0:3]))
-
-
 
 
     def abre_tela_inicial(self):

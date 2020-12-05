@@ -121,15 +121,9 @@ class ControladorCliente(AbstractControlador):
             funcao_escolhida()
 
     def compra(self):
-        tela_compra = True
-        self.__tela_cliente.close()
-        while tela_compra:
 
-            button, values = self.__controlador_principal.mostra_tela_carrinho()
+        self.__controlador_principal.mostra_tela_carrinho()
 
-
-            if button == "Cancelar compra":
-                tela_compra = False
 
     def ver_cadastro(self):
         tela_cadastro = True
