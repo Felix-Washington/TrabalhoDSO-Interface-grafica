@@ -7,26 +7,20 @@ class TelaCarrinho(AbstractTela):
         self.__controlador = controlador_carrinho
         self.__window = None
 
-    def mostra_opcoes(self, produtos, produtos_add):
+    def mostra_opcoes(self, produtos, produto_novo):
         layout = [
             [sg.Text("Lista de produtos")],
-            [sg.Listbox(values=produtos, size=(30, 5)), sg.Listbox(values=produtos_add, size=(30,5))],
+            [sg.Listbox(values=produtos, size=(30, 5)), sg.Listbox(values=produto_novo, size=(30,5))],
             [sg.Button("Finalizar compra")],
-            [sg.Button("Adicionar ao carrinho"), sg.Button("Remover do carrinho"), sg.Cancel("Voltar")]]
+            [sg.Button("Adicionar ao carrinho"), sg.Button("Atualizar quantidade"), sg.Button("Remover do carrinho")],
+            [sg.Button("Limpar carrinho"), sg.Cancel("Voltar")]]
 
+        self.__controlador.lista()
         self.__window = sg.Window("Realizar Compra").Layout(layout)
+        return self.open()
 
-        print("1 - Listar produtos disponíveis")
-        print("2 - Adicionar produto")
-        print("3 - Remover produto")
-        print("4 - Atualizar quantidade")
-        print("5 - Limpar carrinho")
-        print("6 - Listar produtos do carrinho")
-        print("7 - Finalizar compra")
-        print("0 - Voltar")
-
-        opcao = self.le_numero_inteiro("Escolha a opcao: ", [1, 2, 3, 4, 5, 6, 7, 0])
-        return opcao
+        #opcao = self.le_numero_inteiro("Escolha a opcao: ", [1, 2, 3, 4, 5, 6, 7, 0])
+        #return opcao
 
     def open(self):
         button, values = self.__window.Read()
@@ -36,10 +30,13 @@ class TelaCarrinho(AbstractTela):
         self.__window.Close()
 
     def requisita_dados_adicionar(self):
-        print("------ ADICIONAR PRODUTO NO CARRINHO------")
-        codigo = self.le_numero_inteiro("Codigo do produto: ", [])
-        quantidade = self.le_numero_inteiro("Quantidade: ", [])
-        return {"codigo": codigo, "quantidade": quantidade}
+        layout = [
+            [sg.Text("Digite a quantidade do produto: ")],
+            [sg.InputText()],
+            [sg.Submit("Salvar"), sg.Cancel("Cancelar")]
+        ]
+        self.__window = sg.Window("Quantidade de produto").Layout(layout)
+        return self.open()
 
     def mostra_produtos_adicionados(self, codigo: int, nome: str, valor: float, quantidade: int):
         print("-----------------------------------")
@@ -67,7 +64,8 @@ class TelaCarrinho(AbstractTela):
             "produto_adicionado": "Produto adicionado",
             "carrinho_vazio": "O carrinho está vazio",
             "quantidade_insuficiente": "Quantidade insuficiente no estoque!",
-            "limpa_carrinho": "O carrinho foi esvaziado"
+            "limpa_carrinho": "O carrinho foi esvaziado",
+            "campo_vazio": "Digite um valor"
         }
 
         sg.Popup(dicionario[opcao])

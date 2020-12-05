@@ -121,7 +121,7 @@ class ControladorCliente(AbstractControlador):
             funcao_escolhida()
 
     def compra(self):
-        tela_compra = False
+        tela_compra = True
         self.__tela_cliente.close()
         while tela_compra:
 

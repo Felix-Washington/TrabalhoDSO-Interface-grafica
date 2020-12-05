@@ -13,6 +13,7 @@ class ControladorPrincipal:
         self.__controlador_produto = ControladorProduto()
         self.__controlador_carrinho = ControladorCarrinho(self)
 
+
         self.__tela_principal = TelaPrincipal(self)
         self.__exibe_tela = True
 

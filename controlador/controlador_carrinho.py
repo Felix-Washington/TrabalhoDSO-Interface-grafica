@@ -13,8 +13,7 @@ class ControladorCarrinho(AbstractControlador):
         self.__carrinho_dao = CarrinhoDAO()
 
     def lista(self):
-        self.limpa_tela()
-        self.__controlador_principal.controlador_produto.lista()
+        self.__controlador_principal.controlador_produto.lista_produtos_disponiveis()
 
     def lista_produtos_carrinho(self):
         self.limpa_tela()
@@ -26,24 +25,20 @@ class ControladorCarrinho(AbstractControlador):
             self.__tela_carrinho.avisos("carrinho_vazio")
 
     def adiciona(self):
-        dados = self.__tela_carrinho.requisita_dados_adicionar()
-        verifica = self.verifica_duplicidade(dados)
-        if not verifica:
-            existe = False
-            for produto in self.__controlador_principal.controlador_produto.produtos:
-                if produto.codigo == dados["codigo"]:
-                    existe = True
-                    if dados["quantidade"] <= produto.quantidade:
-                        produto_novo = Produto(produto.codigo, produto.nome, produto.valor, dados["quantidade"])
-                        produto.quantidade -= dados["quantidade"]
-                        self.__carrinho_dao.add(produto_novo)
-                        self.__tela_carrinho.avisos("produto_adicionado")
-                        break
-                    else:
-                        self.__tela_carrinho.avisos("quantidade_insuficiente")
+        button, values = self.__tela_carrinho.requisita_dados_adicionar()
+        for produto in self.__controlador_principal.controlador_produto.lista_produtos_disponiveis:
+            if values == '':
+                self.__tela_carrinho.avisos("campo_vazio")
+            else:
+                if values <= produto.quantidade:
+                    produto_novo = Produto(produto.codigo, produto.nome, produto.valor, values)
+                    produto.quantidade -= values
+                    self.__carrinho_dao.add(produto_novo)
+                    self.__tela_carrinho.avisos("produto_adicionado")
+                    break
+                else:
+                    self.__tela_carrinho.avisos("quantidade_insuficiente")
 
-                if not existe:
-                    self.__tela_carrinho.avisos("codigo_invalido")
 
     def verifica_duplicidade(self, dados):
         existe = False
@@ -142,18 +137,19 @@ class ControladorCarrinho(AbstractControlador):
 
     def abre_tela_inicial(self):
         opcoes = {
-            1: self.lista,
-            2: self.adiciona,
-            3: self.remove,
-            4: self.atualiza,
-            5: self.limpa_carrinho,
-            6: self.lista_produtos_carrinho,
-            7: self.finaliza_compra,
-            0: self.finaliza_tela}
+            #"Lista de produtos": self.lista,
+            "Adicionar ao carrinho": self.adiciona,
+            "Remover do carrinho": self.remove,
+            "Atualizar quantidade": self.atualiza,
+            "Limpar carrinho": self.limpa_carrinho,
+            #"Listar carrinho": self.lista_produtos_carrinho,
+            "Finalizar compra": self.finaliza_compra,
+            "Voltar": self.finaliza_tela}
 
-        self.limpa_tela()
+
         self.__exibe_tela = True
         while self.__exibe_tela:
-            opcao = self.__tela_carrinho.mostra_opcoes()
-            funcao = opcoes[opcao]
+            button, values = self.__tela_carrinho.mostra_opcoes()
+            funcao = opcoes[button]
+            self.__tela_carrinho.close()
             funcao()

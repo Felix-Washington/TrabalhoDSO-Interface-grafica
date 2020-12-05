@@ -48,6 +48,7 @@ class ControladorProduto(AbstractControlador):
     def remove(self, codigo_produto_selecionado):
         produto = self.__produto_dao.get(codigo_produto_selecionado)
         self.__produto_dao.remove(produto.codigo)
+        self.__tela_produto.avisos("remove_produto")
 
         #codigo = self.__tela_produto.requisita_dado_remover()
         #for produto in self.__produto_dao.get_all():
@@ -104,7 +105,12 @@ class ControladorProduto(AbstractControlador):
             #self.__tela_produto.avisos("atualiza_produto")
         #else:
             #self.__tela_produto.avisos("codigo_invalido")
-
+    def lista_produtos_disponiveis(self):
+        produtos = []
+        for produto in self.__produto_dao.get_all():
+            produtos.append('{:3d}'.format(produto.codigo) + '-' + produto.nome + '-' + str(produto.valor) + '-' +
+                         str(produto.quantidade))
+        return produtos
     def lista(self):
         tela_lista = True
 
