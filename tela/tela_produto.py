@@ -63,10 +63,8 @@ class TelaProduto(AbstractTela):
         return self.open()
 
 
-    def requisita_dado_remover(self):
-        print("------REMOVER PRODUTO------")
-        codigo = self.le_numero_inteiro("Digite o codigo do produto que deseja remover: ", [])
-        return codigo
+    #def requisita_dado_remover(self, dados_obj):
+
 
     def requisita_dado_atualizar(self, nome= "", valor = "", quantidade= ""):
 

@@ -45,9 +45,10 @@ class ControladorProduto(AbstractControlador):
 
             self.__tela_produto.close()
 
-    def remove(self,dados):
-        self.__produto_dao.remove(dados)
-        self.__window.find_element('list_produtos').Update(dados)
+    def remove(self, codigo_produto_selecionado):
+        produto = self.__produto_dao.get(codigo_produto_selecionado)
+        self.__produto_dao.remove(produto)
+
         #codigo = self.__tela_produto.requisita_dado_remover()
         #for produto in self.__produto_dao.get_all():
             #if produto.codigo == dados_obj:
@@ -119,14 +120,12 @@ class ControladorProduto(AbstractControlador):
             if button == "Voltar":
                 tela_lista = False
             elif button == "Alterar produto":
-                #dados_obj = values['lb_produtos'][0]
                 #primeira posição [0] é do dicionário, a segunda posição [0] é pra pegar o item selecionado do listbox, e o [0:3] é para pegar somente o código do produto
                 self.atualiza(int(values[0][0][0:3]))
 
             elif button == "Remover produto":
-                if dados:
-                    dados_obj = values['lb_produtos'][0]
-                    self.remove(dados)
+                #dados_obj = values['lb_produtos'][0]
+                self.remove(int(values[0][0][0:3]))
 
 
 
