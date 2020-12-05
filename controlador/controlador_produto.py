@@ -47,7 +47,7 @@ class ControladorProduto(AbstractControlador):
 
     def remove(self, codigo_produto_selecionado):
         produto = self.__produto_dao.get(codigo_produto_selecionado)
-        self.__produto_dao.remove(produto)
+        self.__produto_dao.remove(produto.codigo)
 
         #codigo = self.__tela_produto.requisita_dado_remover()
         #for produto in self.__produto_dao.get_all():

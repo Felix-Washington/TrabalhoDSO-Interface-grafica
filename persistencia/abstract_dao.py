@@ -32,5 +32,6 @@ class AbstractDAO(ABC):
     def remove(self, key):
         try:
             self.__object_cache.pop(key)
+            self.__dump()
         except KeyError:
             pass
