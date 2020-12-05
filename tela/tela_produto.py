@@ -31,11 +31,6 @@ class TelaProduto(AbstractTela):
     def open(self):
         button, values = self.__window.Read()
         return button, values
-        if Button == "Listar produtos":
-            controlador.controlador_produto.lista()
-            dados_obj = values['lb_produtos'][0]
-
-
 
 
     def close(self):
@@ -55,7 +50,7 @@ class TelaProduto(AbstractTela):
 
 
         return self.open()
-        self.close()
+
 
     def mostra_dados_cadastrados(self, dados):
         #pegar os 3 primeiros dígitos da string e transformar num int
@@ -83,9 +78,8 @@ class TelaProduto(AbstractTela):
             [sg.Submit("Salvar Alteração"), sg.Cancel("Cancelar")]]
 
         self.__window = sg.Window("Atualização de produto").Layout(layout)
-
-        #codigo = self.le_numero_inteiro("Digite o codigo do produto que deseja atualizar: ", [])
         return self.open()
+
 
     def atualiza_produto(self):
         nome = self.verifica_palavra("Digite o novo nome: ")
