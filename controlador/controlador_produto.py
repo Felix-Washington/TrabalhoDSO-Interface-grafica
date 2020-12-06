@@ -9,6 +9,9 @@ class ControladorProduto(AbstractControlador):
     def __init__(self):
         self.__produto_dao = ProdutoDAO()
         self.__tela_produto = TelaProduto(self)
+    @property
+    def produto_dao(self):
+        return self.__produto_dao
 
     @property
     def produtos(self):
@@ -113,6 +116,13 @@ class ControladorProduto(AbstractControlador):
         else:
             return False
 
+    def atualiza_estoque_carrinho(self,key, quantidade):
+        produto = self.__produto_dao.get(key)
+        for prod in self.__produto_dao.get_all():
+            if key == prod.codigo:
+                prod.quantidade += quantidade
+
+
 
     def atualiza_quantidade(self, key):
         produto = self.__produto_dao.get(key)
@@ -120,9 +130,10 @@ class ControladorProduto(AbstractControlador):
         produto.quantidade -= 1
         produto.quantidade = str(produto.quantidade)
         self.__produto_dao.add(produto)
+        return self.__produto_dao.get_all()
 
-        produto_b = self.__produto_dao.get(key)
-        print("quantidade", produto_b.quantidade)
+        #produto_b = self.__produto_dao.get(key)
+        #print("quantidade", produto_b.quantidade)
 
 
     def abre_tela_inicial(self):

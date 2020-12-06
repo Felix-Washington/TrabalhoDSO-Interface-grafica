@@ -11,7 +11,7 @@ class TelaCarrinho(AbstractTela):
             [sg.Text("Produtos disponíveis"), sg.Text("Produtos no carrinho")],
             [sg.Listbox(values=produtos, size=(30, 5)), sg.Listbox(values=produto_novo, size=(30,5))],
             [sg.Button("Finalizar compra")],
-            [sg.Button("+"), sg.Button("Atualizar quantidade"), sg.Button("-")],
+            [sg.Button("+"), sg.Button("-")],
             [sg.Button("Limpar carrinho"), sg.Cancel("Voltar")]]
 
         self.__window = sg.Window("Realizar Compra").Layout(layout)

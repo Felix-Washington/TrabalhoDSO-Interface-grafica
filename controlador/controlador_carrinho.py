@@ -30,19 +30,18 @@ class ControladorCarrinho(AbstractControlador):
         pode_add = self.__controlador_principal.controlador_produto.verifica_quantidade(
             codigo)
         if pode_add:
-
             if produto_selecionado not in self.__produtos_carrinho:
-
                 self.__produtos_carrinho.append([str(codigo), nome, str(valor), str(1)])
-            else:
+            #else:
+            #for produto in self.__produtos_carrinho:
+                #if produto.codigo == codigo:
+            self.__controlador_principal.controlador_produto.atualiza_quantidade(codigo)
 
-                for produto in self.__produtos_carrinho:
-
-                    if produto.codigo == codigo:
-                        self.__controlador_principal.controlador_produto.atualiza_quantidade(codigo)
                         #atualizar a quantidade aqui
-                        #produto =
-                        self.__produtos_carrinho.append([str(codigo), nome, str(valor), str(1)])
+                        #quantidade = produto.quantidade
+                        #quantidade += 1
+                        #produto = [str(codigo), nome, str(valor), str(1), str(quantidade)]
+                        #self.__produtos_carrinho.append()
 
         else:
             self.__tela_carrinho.avisos("quantidade_insuficiente")
@@ -112,6 +111,8 @@ class ControladorCarrinho(AbstractControlador):
 
     def limpa_carrinho(self):
         if self.__produtos_carrinho != []:
+            for produto in self.__produtos_carrinho:
+                self.__controlador_principal.controlador_produto.atualiza_estoque_carrinho(produto.codigo, produto.quantidade)
             self.__produtos_carrinho = []
         else:
             self.__tela_carrinho.avisos("limpa_carrinho")
