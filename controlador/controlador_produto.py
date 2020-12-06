@@ -15,8 +15,8 @@ class ControladorProduto(AbstractControlador):
         lista_produtos = []
         for produto in  self.__produto_dao.get_all():
             lista_produtos.append(produto)
-            print(produto.codigo)
         return self.__produto_dao.get_all
+
 
 
     def adiciona(self):
@@ -107,8 +107,8 @@ class ControladorProduto(AbstractControlador):
 
     def verifica_quantidade(self, key):
         produto = self.__produto_dao.get(key)
-        print(produto.codigo)
-        print(type(produto.quantidade))
+        #print(produto.codigo)
+        #print(type(produto.quantidade))
         if int(produto.quantidade) > 0:
             return True
         else:

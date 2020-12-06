@@ -22,10 +22,27 @@ class ControladorCarrinho(AbstractControlador):
             self.__tela_carrinho.avisos("carrinho_vazio")
 
     def adiciona(self, produto_selecionado):
-        pode_add = self.__controlador_principal.controlador_produto.verifica_quantidade(int(produto_selecionado[0][0:3]))
+        lista_separada = produto_selecionado[0].split("-")
+        codigo = int(lista_separada[0])
+        nome = lista_separada[1]
+        valor = lista_separada[2]
+        #quantidade = lista_separada[3]
+        pode_add = self.__controlador_principal.controlador_produto.verifica_quantidade(
+            codigo)
         if pode_add:
-            self.__produtos_carrinho.append(produto_selecionado)
-
+            for produto in self.__controlador_principal.controlador_produto.produtos():
+                if produto.codigo == codigo:
+                    quant = int(produto.quantidade)
+                    quant -= 1
+                    continue
+            for obj in self.__produtos_carrinho:
+                #lista_separada = obj[0].split(" ")
+                #codigo_obj = int(lista_separada[0])
+                #quantidade_obj = int(lista_separada[3])
+                if codigo == obj.codigo:
+                    obj.quantidade += 1
+                    break
+            self.__produtos_carrinho.append([str(codigo), nome, str(valor), str(1)])
         else:
             self.__tela_carrinho.avisos("quantidade_insuficiente")
 
@@ -60,7 +77,10 @@ class ControladorCarrinho(AbstractControlador):
                 if produto_selecionado == produto:
                     if produto.quantidade > 0:
                         produto.quantidade -= 1
-
+                        for prod in self.__controlador_principal.controlador_produto.produtos():
+                            if prod.codigo == produto.codigo:
+                                prod.quantidade += 1
+                                break
                     else:
                         self.__produtos_carrinho.remove(produto_selecionado)
 
