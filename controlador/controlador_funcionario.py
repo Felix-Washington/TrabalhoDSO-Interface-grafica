@@ -127,6 +127,7 @@ class ControladorFuncionario(AbstractControlador):
             elif button == "Remover Cadastro":
                 self.remove()
                 tela_cadastro = False
+                self.__log_funcionario = False
             else:
                 tela_cadastro = False
 
@@ -136,22 +137,20 @@ class ControladorFuncionario(AbstractControlador):
         while tela_atualiza:
             button, values = self.__tela_funcionario.tela_atualiza_cadastro()
 
-            nome = values[0]
-            senha = values[1]
             if button == "Cancelar":
                 self.__tela_funcionario.avisos("operacao_cancelada")
-                self.__tela_funcionario.close()
                 tela_atualiza = False
 
             elif values[0] == "" or values[1] == "":
                 self.__tela_funcionario.avisos("campo_vazio")
             else:
 
-                self.__funcionario_logado.nome = nome
-                self.__funcionario_logado.senha = senha
+                self.__funcionario_logado.nome = values[0]
+                self.__funcionario_logado.senha = values[1]
+                self.__funcionario_dao.add(self.__funcionario_logado)
+
 
                 self.__tela_funcionario.avisos("atualiza")
-                self.__tela_funcionario.close()
                 tela_atualiza = False
 
             self.__tela_funcionario.close()
@@ -169,22 +168,15 @@ class ControladorFuncionario(AbstractControlador):
                 self.__tela_funcionario.avisos("campo_vazio")
 
             else:
-                #self.__tela_funcionario.confirma_tela()
                 cpf = int(values[0])
                 senha = values[1]
-                for um_funcionario in self.__funcionario_dao.get_all():
-                    if cpf == um_funcionario.cpf and senha == um_funcionario.senha:
-                        self.__funcionario_dao.remove(um_funcionario)
-                        self.__funcionario_logado = None
-                        self.__tela_funcionario.avisos("remover")
+                if cpf == self.__funcionario_logado.cpf and senha == self.__funcionario_logado.senha:
+                    self.__funcionario_dao.remove(cpf)
+                    tela_remove = False
+                    self.__tela_funcionario.avisos("remover")
 
-                        self.__log_funcionario = False
-                        tela_remove = False
-                        break
-
-                if cpf != um_funcionario.cpf or senha != um_funcionario.senha:
+                else:
                     self.__tela_funcionario.avisos("dados_invalidos")
-
             self.__tela_funcionario.close()
 
     def lista_clientes(self):

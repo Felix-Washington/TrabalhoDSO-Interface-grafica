@@ -16,7 +16,3 @@ class ClienteDAO(AbstractDAO):
     def remove(self, key):
         if isinstance(key, int):
             super().remove(key)
-
-    def att(self, cliente_logado):
-        for cliente in self.get_all():
-            print(cliente.nome)

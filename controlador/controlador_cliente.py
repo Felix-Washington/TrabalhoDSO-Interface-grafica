@@ -146,23 +146,19 @@ class ControladorCliente(AbstractControlador):
 
         while tela_atualiza:
             button, values = self.__tela_cliente.tela_atualiza_cadastro()
-            self.__cliente_dao.att(self.__cliente_logado)
-            nome = values[0]
-            senha = values[1]
+
             if button == "Cancelar":
                 self.__tela_cliente.avisos("operacao_cancelada")
-                self.__tela_cliente.close()
                 tela_atualiza = False
 
             elif values[0] == "" or values[1] == "":
                 self.__tela_cliente.avisos("campo_vazio")
             else:
 
-                self.__cliente_logado.nome = nome
-                self.__cliente_logado.senha = senha
-
+                self.__cliente_logado.nome = values[0]
+                self.__cliente_logado.senha = values[1]
+                self.__cliente_dao.add(self.__cliente_logado)
                 self.__tela_cliente.avisos("atualiza")
-                self.__tela_cliente.close()
                 tela_atualiza = False
 
             self.__tela_cliente.close()
@@ -183,17 +179,13 @@ class ControladorCliente(AbstractControlador):
                 cpf = int(values[0])
                 senha = values[1]
                 cliente = None
-                for um_cliente in self.__cliente_dao.get_all():
-                    if cpf == um_cliente.cpf and senha == um_cliente.senha:
-                        self.__cliente_dao.remove(um_cliente)
-                        self.__cliente_logado = None
-                        self.__tela_cliente.avisos("remover")
-                        self.__log_cliente = False
-                        tela_remove = False
-                        cliente = um_cliente
 
-
-                        break
+                if cpf == self.__cliente_logado.cpf and senha == self.__cliente_logado.senha:
+                    self.__cliente_dao.remove(cpf)
+                    tela_remove = False
+                    self.__tela_cliente.avisos("remover")
+                else:
+                    self.__tela_cliente.avisos("dados_invalidos")
 
                 if cpf != cliente.cpf or senha != cliente.senha:
                     self.__tela_cliente.avisos("dados_invalidos")
