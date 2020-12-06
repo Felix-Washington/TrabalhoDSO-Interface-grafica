@@ -30,21 +30,23 @@ class ControladorCarrinho(AbstractControlador):
         pode_add = self.__controlador_principal.controlador_produto.verifica_quantidade(
             codigo)
         if pode_add:
-            for produto in self.__controlador_principal.controlador_produto.produtos():
-                if produto.codigo == codigo:
-                    quant = int(produto.quantidade)
-                    quant -= 1
-                    continue
-            for obj in self.__produtos_carrinho:
-                #lista_separada = obj[0].split(" ")
-                #codigo_obj = int(lista_separada[0])
-                #quantidade_obj = int(lista_separada[3])
-                if codigo == obj.codigo:
-                    obj.quantidade += 1
-                    break
-            self.__produtos_carrinho.append([str(codigo), nome, str(valor), str(1)])
+
+            if produto_selecionado not in self.__produtos_carrinho:
+
+                self.__produtos_carrinho.append([str(codigo), nome, str(valor), str(1)])
+            else:
+
+                for produto in self.__produtos_carrinho:
+
+                    if produto.codigo == codigo:
+                        self.__controlador_principal.controlador_produto.atualiza_quantidade(codigo)
+                        #atualizar a quantidade aqui
+                        #produto =
+                        self.__produtos_carrinho.append([str(codigo), nome, str(valor), str(1)])
+
         else:
             self.__tela_carrinho.avisos("quantidade_insuficiente")
+
 
     def verifica_duplicidade(self, dados):
         existe = False

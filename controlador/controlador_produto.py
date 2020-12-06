@@ -107,12 +107,23 @@ class ControladorProduto(AbstractControlador):
 
     def verifica_quantidade(self, key):
         produto = self.__produto_dao.get(key)
-        #print(produto.codigo)
-        #print(type(produto.quantidade))
+
         if int(produto.quantidade) > 0:
             return True
         else:
             return False
+
+
+    def atualiza_quantidade(self, key):
+        produto = self.__produto_dao.get(key)
+        produto.quantidade = int(produto.quantidade)
+        produto.quantidade -= 1
+        produto.quantidade = str(produto.quantidade)
+        self.__produto_dao.add(produto)
+
+        produto_b = self.__produto_dao.get(key)
+        print("quantidade", produto_b.quantidade)
+
 
     def abre_tela_inicial(self):
         lista_opcoes = {

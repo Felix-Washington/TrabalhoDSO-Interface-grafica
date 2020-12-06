@@ -53,6 +53,7 @@ class ControladorPrincipal:
     def produtos_cadastrados(self):
         return self.controlador_produto.lista_produtos_disponiveis()
 
+
     def abre_tela_inicial(self):
 
         while self.__exibe_tela:

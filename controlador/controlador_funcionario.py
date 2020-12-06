@@ -201,12 +201,8 @@ class ControladorFuncionario(AbstractControlador):
 
     def desloga(self):
 
-        button, values = self.__tela_funcionario.confirma_tela("pessoa", self.__funcionario_logado.nome)
+        button, values = self.__tela_funcionario.confirma_tela("pessoa")
         if button == "Sim":
             self.__log_funcionario = False
             self.__funcionario_logado = None
 
-            #self.__tela_funcionario.avisos("desloga")
-
-
-        self.__tela_funcionario.close()
