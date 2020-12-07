@@ -80,6 +80,7 @@ class ControladorCliente(AbstractControlador):
                 self.__tela_cliente.avisos("campo_vazio")
 
             else:
+
                 values[1] = int(values[1])
                 encontrou = False
 
@@ -207,6 +208,7 @@ class ControladorCliente(AbstractControlador):
             self.__tela_cliente.avisos("desloga")
 
         self.__tela_cliente.close()
+
 
     def lista_clientes(self):
         return self.__cliente_dao.get_all()

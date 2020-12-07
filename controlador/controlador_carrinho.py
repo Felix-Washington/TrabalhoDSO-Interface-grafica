@@ -33,28 +33,27 @@ class ControladorCarrinho(AbstractControlador):
                     else:
                         self.__produtos_carrinho.append([str(codigo), nome, str(valor), str(1)])
 
+
             self.__controlador_principal.controlador_produto.atualiza_quantidade(codigo)
+            self.__tela_carrinho.avisos("produto_adicionado")
 
         else:
             self.__tela_carrinho.avisos("quantidade_insuficiente")
 
     def remove(self, produto_selecionado):
 
-        if self.__produtos_carrinho != []:
-            codigo = produto_selecionado[0][0]
-            for produto in self.__produtos_carrinho:
-                if codigo == produto[0]:
-                    self.__controlador_principal.controlador_produto.atualiza_estoque_carrinho(int(produto[0]), 1)
-                    produto[3] = int(produto[3])
-                    produto[3] -= 1
-                    produto[3] = str(produto[3])
-                    if int(produto[3]) <= 0:
-                        self.__produtos_carrinho.remove(produto)
-                        break
+        codigo = produto_selecionado[0][0]
+        for produto in self.__produtos_carrinho:
+            if codigo == produto[0]:
+                self.__controlador_principal.controlador_produto.atualiza_estoque_carrinho(int(produto[0]), 1)
+                produto[3] = int(produto[3])
+                produto[3] -= 1
+                produto[3] = str(produto[3])
+                if int(produto[3]) <= 0:
+                    self.__produtos_carrinho.remove(produto)
+                    self.__tela_carrinho.avisos("produto_removido")
+                    break
 
-
-        else:
-            self.__tela_carrinho.avisos("carrinho_vazio")
 
 
     def limpa_carrinho(self):
@@ -83,6 +82,8 @@ class ControladorCarrinho(AbstractControlador):
                 self.__controlador_principal.nf_cliente(total)
                 self.__tela_carrinho.close()
                 self.__controlador_principal.controlador_cliente.cliente_opcoes()
+                self.__tela_carrinho.avisos("compra_finalizada")
+
 
 
 
@@ -106,11 +107,18 @@ class ControladorCarrinho(AbstractControlador):
             elif button == "Finalizar compra":
                 self.finaliza_compra()
 
+
             elif button == "+":
-                self.adiciona(values[0])
+                if not values[0]:
+                    self.__tela_carrinho.avisos("selecionar_produto")
+                else:
+                    self.adiciona(values[0])
 
             elif button == "-":
-                self.remove(values[1])
+                if not values[1]:
+                    self.__tela_carrinho.avisos("selecionar_produto")
+                else:
+                    self.remove(values[1])
 
             elif button == "Limpar carrinho":
                 self.limpa_carrinho()
