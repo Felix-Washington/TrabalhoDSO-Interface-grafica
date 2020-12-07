@@ -12,6 +12,7 @@ class ControladorCarrinho(AbstractControlador):
         self.__produtos_carrinho = []
 
     def adiciona(self, produto_selecionado):
+
         lista_separada = produto_selecionado[0].split("-")
         codigo = int(lista_separada[0])
         nome = lista_separada[1]
@@ -38,8 +39,9 @@ class ControladorCarrinho(AbstractControlador):
             self.__tela_carrinho.avisos("quantidade_insuficiente")
 
     def remove(self, produto_selecionado):
-        codigo = produto_selecionado[0][0]
+
         if self.__produtos_carrinho != []:
+            codigo = produto_selecionado[0][0]
             for produto in self.__produtos_carrinho:
                 if codigo == produto[0]:
                     self.__controlador_principal.controlador_produto.atualiza_estoque_carrinho(int(produto[0]), 1)

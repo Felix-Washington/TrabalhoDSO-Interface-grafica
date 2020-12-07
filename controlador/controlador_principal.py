@@ -16,7 +16,7 @@ class ControladorPrincipal:
 
     def nf_cliente(self, total):
         cpf_cliente = self.__controlador_cliente.dado_cliente()
-        self.__controlador_cliente.verifica_cpf(cpf_cliente, total)
+        self.__controlador_cliente.adiciona_nf(cpf_cliente, total)
 
 
     @property

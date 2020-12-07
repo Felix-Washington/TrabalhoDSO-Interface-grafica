@@ -211,7 +211,7 @@ class ControladorCliente(AbstractControlador):
     def lista_clientes(self):
         return self.__cliente_dao.get_all()
 
-    def verifica_cpf(self, key, total):
+    def adiciona_nf(self, key, total):
         cliente = self.__cliente_dao.get(key)
-        cliente.notas_fiscais.append(str(total))
+        cliente.notas_fiscais.append("Valor total: "+str(total))
         self.__cliente_dao.add(cliente)
