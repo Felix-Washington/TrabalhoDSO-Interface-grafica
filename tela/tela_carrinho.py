@@ -8,7 +8,7 @@ class TelaCarrinho(AbstractTela):
 
     def mostra_opcoes(self, produtos, produto_novo):
         layout = [
-            [sg.Text("Produtos disponíveis", size(30, 1)), sg.Text("Produtos no carrinho")],
+            [sg.Text("Produtos disponíveis", size=(30, 1)), sg.Text("Produtos no carrinho")],
             [sg.Listbox(values=produtos, size=(30, 5)), sg.Listbox(values=produto_novo, size=(30,5))],
             [sg.Button("Finalizar compra")],
             [sg.Button("+"), sg.Button("-")],

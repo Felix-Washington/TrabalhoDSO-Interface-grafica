@@ -38,18 +38,18 @@ class ControladorCarrinho(AbstractControlador):
             self.__tela_carrinho.avisos("quantidade_insuficiente")
 
     def remove(self, produto_selecionado):
-        print(self.__produtos_carrinho)
+        codigo = produto_selecionado[0][0]
         if self.__produtos_carrinho != []:
             for produto in self.__produtos_carrinho:
-                if produto_selecionado == produto:
-                    if produto.quantidade > 0:
-                        produto.quantidade -= 1
-                        for prod in self.__controlador_principal.controlador_produto.produtos():
-                            if prod.codigo == produto.codigo:
-                                prod.quantidade += 1
-                                break
-                    else:
-                        self.__produtos_carrinho.remove(produto_selecionado)
+                if codigo == produto[0]:
+                    self.__controlador_principal.controlador_produto.atualiza_estoque_carrinho(int(produto[0]), 1)
+                    produto[3] = int(produto[3])
+                    produto[3] -= 1
+                    produto[3] = str(produto[3])
+                    if int(produto[3]) <= 0:
+                        self.__produtos_carrinho.remove(produto)
+                        break
+
 
         else:
             self.__tela_carrinho.avisos("carrinho_vazio")
