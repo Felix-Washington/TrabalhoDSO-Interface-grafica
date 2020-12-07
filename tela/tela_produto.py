@@ -72,6 +72,7 @@ class TelaProduto(AbstractTela):
             "codigo_invalido": "Digite um código válido!",
             "operacao_cancelada": "Operação cancelada!",
             "digite_dados_validos": "Digite dados validos",
+            "selecione_produto": "Selecione um produto",
             "campo_vazio": "Preencha todos os campos!"
         }
 

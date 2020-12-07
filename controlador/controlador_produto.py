@@ -93,12 +93,18 @@ class ControladorProduto(AbstractControlador):
             if button == "Voltar":
                 tela_lista = False
             elif button == "Alterar produto":
+                if not values[0]:
+                    self.__tela_produto.avisos("selecione_produto")
+                else:
+
                 #primeira posição [0] é do dicionário, a segunda posição [0] é pra pegar o item selecionado do listbox, e o [0:3] é para pegar somente o código do produto
-                self.atualiza(int(values[0][0][0:3]))
+                    self.atualiza(int(values[0][0][0:3]))
 
             elif button == "Remover produto":
-
-                self.remove(int(values[0][0][0:3]))
+                if not values[0]:
+                    self.__tela_produto.avisos("selecione_produto")
+                else:
+                    self.remove(int(values[0][0][0:3]))
 
     def verifica_quantidade(self, key):
         produto = self.__produto_dao.get(key)
