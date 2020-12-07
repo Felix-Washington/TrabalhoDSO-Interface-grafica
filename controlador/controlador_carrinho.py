@@ -2,7 +2,7 @@ from entidade.carrinho import Carrinho
 from tela.tela_carrinho import TelaCarrinho
 from controlador.abstract_controlador import AbstractControlador
 from entidade.produto import Produto
-from tela.nota_fiscal import NotaFiscal
+
 
 class ControladorCarrinho(AbstractControlador):
 
@@ -54,26 +54,6 @@ class ControladorCarrinho(AbstractControlador):
         else:
             self.__tela_carrinho.avisos("carrinho_vazio")
 
-    def atualiza(self):
-        existe = False
-        dados = self.__tela_carrinho.requisita_dado_atualizar()
-        for produto in self.__carrinho_dao.get_all():
-            if produto.codigo == dados["codigo"]:
-                existe = True
-                for prod in self.__controlador_principal.controlador_produto.produtos:
-                    if produto.codigo == prod.codigo:
-                        if dados["quantidade"] < produto.quantidade:
-                            prod.quantidade += (produto.quantidade - dados["quantidade"])
-                            produto.quantidade = dados["quantidade"]
-                            self.__tela_carrinho.avisos("atualiza_produto")
-                            break
-                        elif dados["quantidade"] == (prod.quantidade + produto.quantidade):
-                            prod.quantidade = dados["quantidade"] - (prod.quantidade + produto.quantidade)
-                            self.__tela_carrinho.avisos("atualiza_produto")
-                        else:
-                            self.__tela_carrinho.avisos("quantidade_insuficiente")
-        if not existe:
-            self.__tela_carrinho.avisos("codigo_invalido")
 
     def limpa_carrinho(self):
         if self.__produtos_carrinho != []:
@@ -98,14 +78,17 @@ class ControladorCarrinho(AbstractControlador):
             button, values = self.__tela_carrinho.confirma_tela("finaliza_compra")
 
             if button == "Sim":
+                self.__controlador_principal.nf_cliente(total)
+                self.__tela_carrinho.close()
+                self.__controlador_principal.controlador_cliente.cliente_opcoes()
 
-                cpf_cliente = self.__controlador_principal.controlador_cliente.dado_cliente()
-                self.__controlador_principal.controlador_nf.adiciona(cpf_cliente, total)
-                lista_nf = self.__controlador_principal.controlador_nf.lista()
-                self.__controlador_principal.controlador_nf.tela_nf(lista_nf)
+
 
             elif button == "Não":
                 self.__tela_carrinho.avisos("compra_cancelada")
+
+    def atualiza(self,dados_obj):
+        pass
 
     def abre_tela_inicial(self):
         self.__exibe_tela = True

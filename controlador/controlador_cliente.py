@@ -2,7 +2,7 @@ from controlador.abstract_controlador import AbstractControlador
 from entidade.cliente import Cliente
 from tela.tela_cliente import TelaCliente
 from persistencia.cliente_dao import ClienteDAO
-from tela.nota_fiscal import NotaFiscal
+
 
 class ControladorCliente(AbstractControlador):
     def __init__(self, controlador):
@@ -10,7 +10,6 @@ class ControladorCliente(AbstractControlador):
         self.__tela_cliente = TelaCliente()
         self.__controlador_principal = controlador
         self.__cliente_logado = None
-        self.__tela_nota_fiscal = NotaFiscal
         self.__log_cliente = True
 
 
@@ -211,3 +210,8 @@ class ControladorCliente(AbstractControlador):
 
     def lista_clientes(self):
         return self.__cliente_dao.get_all()
+
+    def verifica_cpf(self, key, total):
+        cliente = self.__cliente_dao.get(key)
+        cliente.notas_fiscais.append(str(total))
+        self.__cliente_dao.add(cliente)

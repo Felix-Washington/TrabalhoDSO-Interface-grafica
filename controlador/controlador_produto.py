@@ -9,9 +9,6 @@ class ControladorProduto(AbstractControlador):
     def __init__(self):
         self.__produto_dao = ProdutoDAO()
         self.__tela_produto = TelaProduto(self)
-    @property
-    def produto_dao(self):
-        return self.__produto_dao
 
     @property
     def produtos(self):
