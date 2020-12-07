@@ -5,13 +5,6 @@ class TelaFuncionario(AbstractTela):
     def __init__(self):
         self.__window = None
 
-    def init_components(self):
-
-        sg.ChangeLookAndFeel("Reddit")
-        menu_def = [
-            ['File', ['Open', 'Save', 'Exit', 'Properties']]
-        ]
-
     def mostra_opcoes(self):
         layout = [
             [sg.Text('Como funcionário você deseja?', size=(30, 2))],

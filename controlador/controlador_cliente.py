@@ -13,7 +13,6 @@ class ControladorCliente(AbstractControlador):
         self.__log_cliente = True
 
 
-
     @property
     def cliente_logado(self):
         return self.__cliente_logado

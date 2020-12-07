@@ -4,14 +4,7 @@ import PySimpleGUI as sg
 class TelaCliente(AbstractTela):
     def __init__(self):
         self.__window = None
-        self.init_components()
-
-    def init_components(self):
-
-        sg.ChangeLookAndFeel("Reddit")
-        menu_def = [
-            ['File', ['Open', 'Save', 'Exit', 'Properties']]
-        ]
+        #self.init_components()
 
     def open(self):
         button, values = self.__window.Read()

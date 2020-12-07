@@ -6,13 +6,6 @@ class TelaProduto(AbstractTela):
     def __init__(self, controlador_produto):
         self.__controle = controlador_produto
         self.__window = None
-        self.init_components()
-
-    def init_components(self):
-        sg.ChangeLookAndFeel("Reddit")
-        menu_def = [
-            ['File', ['Open', 'Save', 'Exit', 'Properties']]
-        ]
 
     def mostra_opcoes(self):
         layout = [
