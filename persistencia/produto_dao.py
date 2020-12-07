@@ -17,6 +17,3 @@ class ProdutoDAO(AbstractDAO):
     def remove(self, key):
         if isinstance(key, int):
             super().remove(key)
-
-    def att(self, values):
-        pass

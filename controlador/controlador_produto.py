@@ -97,7 +97,7 @@ class ControladorProduto(AbstractControlador):
                 self.atualiza(int(values[0][0][0:3]))
 
             elif button == "Remover produto":
-                #dados_obj = values['lb_produtos'][0]
+
                 self.remove(int(values[0][0][0:3]))
 
     def verifica_quantidade(self, key):
