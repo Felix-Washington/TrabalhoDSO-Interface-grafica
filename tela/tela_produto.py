@@ -38,7 +38,6 @@ class TelaProduto(AbstractTela):
 
     def requisita_dados_cadastro(self):
         layout = [
-            # [sg.Menu(menu_def, tearoff=True)]
             [sg.Text('Código: ', size=(20, 1)), sg.InputText()],
             [sg.Text("Nome: ", size=(20, 1)), sg.InputText()],
             [sg.Text("Valor: ", size=(20, 1)), sg.InputText()],
@@ -47,13 +46,10 @@ class TelaProduto(AbstractTela):
             [sg.Submit("Salvar"), sg.Cancel("Cancelar")]]
 
         self.__window = sg.Window("Cadastro de produto").Layout(layout)
-
-
         return self.open()
 
 
     def mostra_dados_cadastrados(self, dados):
-        #pegar os 3 primeiros dígitos da string e transformar num int
         layout = [
             [sg.Text("Produtos cadastrados: ")],
             [sg.Listbox(values=dados, size=(30, 5))],
@@ -62,12 +58,7 @@ class TelaProduto(AbstractTela):
         self.__window = sg.Window("Produtos").Layout(layout)
         return self.open()
 
-
-    #def requisita_dado_remover(self, dados_obj):
-
-
     def requisita_dado_atualizar(self, nome= "", valor = "", quantidade= ""):
-
         layout = [
             [sg.Text("Nome: ", size=(20, 1)), sg.InputText(nome, key='nome')],
             [sg.Text("Valor: ", size=(20, 1)), sg.InputText(valor, key='valor')],
@@ -77,15 +68,6 @@ class TelaProduto(AbstractTela):
 
         self.__window = sg.Window("Atualização de produto").Layout(layout)
         return self.open()
-
-
-    def atualiza_produto(self):
-        nome = self.verifica_palavra("Digite o novo nome: ")
-
-        valor = self.verifica_float("Digite o novo valor: ")
-
-        quantidade = self.le_numero_inteiro("Digite a nova quantidade: ", [])
-        return {"nome": nome, "valor": valor, "quantidade": quantidade}
 
     def avisos(self, opcao: str):
         dicionario = {

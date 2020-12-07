@@ -25,7 +25,6 @@ class TelaFuncionario(AbstractTela):
 
     def dados_cadastro(self):
         layout = [
-            # [sg.Menu(menu_def, tearoff=True)]
             [sg.Text('Nome: ')],
             [sg.InputText()],
             [sg.Text("Cpf: ")],
@@ -48,7 +47,6 @@ class TelaFuncionario(AbstractTela):
 
     def login(self):
         layout = [
-            # [sg.Menu(menu_def, tearoff=True)]
             [sg.Text("Cpf:")],
             [sg.InputText()],
             [sg.Text("Senha:")],
@@ -99,7 +97,6 @@ class TelaFuncionario(AbstractTela):
 
     def tela_funcionario_logado(self, nome_funcionario: str):
         layout = [
-            # [sg.Menu(menu_def, tearoff=True)]
             [sg.Text("Olá"), sg.Text(nome_funcionario), sg.Text("o que deseja?", size=(30,1))],
             [sg.Button("Cadastro")],
             [sg.Button("Ver Estoque"), sg.Button("Lista de clientes")],

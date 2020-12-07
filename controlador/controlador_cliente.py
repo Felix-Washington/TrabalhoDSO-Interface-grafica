@@ -55,7 +55,7 @@ class ControladorCliente(AbstractControlador):
                     if cpf == um_cliente.cpf and senha == um_cliente.senha:
                         encontrou = True
                         cliente = um_cliente
-                        #break
+
 
                 if encontrou:
                     self.__cliente_logado = cliente
@@ -121,9 +121,11 @@ class ControladorCliente(AbstractControlador):
     def compra(self):
 
         self.__controlador_principal.mostra_tela_carrinho()
+
     def dado_cliente(self):
         cpf_cliente = self.__cliente_logado.cpf
         return cpf_cliente
+
     def ver_cadastro(self):
         tela_cadastro = True
 

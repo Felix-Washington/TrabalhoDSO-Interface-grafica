@@ -12,7 +12,6 @@ class ControladorFuncionario(AbstractControlador):
         self.__controlador_principal = controlador
         self.__funcionario_logado = None
         self.__exibe_tela = False
-
         self.__log_funcionario = False
 
     def abre_tela_inicial(self):

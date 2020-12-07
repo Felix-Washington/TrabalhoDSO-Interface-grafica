@@ -18,7 +18,6 @@ class ControladorProduto(AbstractControlador):
         return self.__produto_dao.get_all
 
 
-
     def adiciona(self):
         tela_adiciona = True
 
@@ -33,19 +32,6 @@ class ControladorProduto(AbstractControlador):
                 self.__tela_produto.avisos("campo_vazio")
 
             else:
-                codigo = values[0]
-                nome = values[1]
-                valor = values[2]
-                quantidade = values[3]
-                print(codigo)
-                if codigo != int:
-                    self.__tela_produto.avisos("digite_dados_validos")
-                if nome != str:
-                    self.__tela_produto.avisos("digite_dados_validos")
-                if valor != float:
-                    self.__tela_produto.avisos("digite_dados_validos")
-                if quantidade != int:
-                    self.__tela_produto.avisos("digite_dados_validos")
                 ja_existe = False
                 for produto in self.__produto_dao.get_all():
                     if int(values[0]) == produto.codigo:
@@ -80,8 +66,6 @@ class ControladorProduto(AbstractControlador):
             produto.nome = values['nome']
             produto.valor = values['valor']
             produto.quantidade = values['quantidade']
-
-
             self.__produto_dao.add(produto)
 
         self.__tela_produto.close()

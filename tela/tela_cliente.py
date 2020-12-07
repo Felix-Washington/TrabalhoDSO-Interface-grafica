@@ -18,8 +18,6 @@ class TelaCliente(AbstractTela):
         return button, values
 
     def close(self):
-
-        #super().close()
         self.__window.Close()
 
     def dados_cadastro(self):
@@ -40,7 +38,6 @@ class TelaCliente(AbstractTela):
 
     def login(self):
         layout = [
-            # [sg.Menu(menu_def, tearoff=True)]
             [sg.Text("Cpf:")],
             [sg.InputText()],
             [sg.Text("Senha:")],
@@ -67,7 +64,6 @@ class TelaCliente(AbstractTela):
 
     def tela_atualiza_cadastro(self):
         layout = [
-            # [sg.Menu(menu_def, tearoff=True)]
             [sg.Text('Nome: ')],
             [sg.InputText()],
             [sg.Text("Senha: ")],
@@ -105,7 +101,6 @@ class TelaCliente(AbstractTela):
 
     def mostra_opcoes(self):
         layout = [
-            # [sg.Menu(menu_def, tearoff=True)]
             [sg.Text('Como cliente você deseja?', size=(30, 2))],
             [sg.Cancel("Voltar")],
 
