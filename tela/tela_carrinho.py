@@ -28,14 +28,11 @@ class TelaCarrinho(AbstractTela):
         dicionario = {
             "produto_removido": "Produto removido com sucesso",
             "compra_cancelada": "Compra cancelada!",
-            "produto_adicionado": "Produto adicionado",
             "carrinho_vazio": "O carrinho está vazio",
             "quantidade_insuficiente": "Quantidade insuficiente no estoque!",
             "limpa_carrinho": "O carrinho foi esvaziado",
-            "campo_vazio": "Digite um valor",
             "selecionar_produto": "Selecione um produto",
-            "compra_finalizada": "Compra finalizada com sucesso",
-            "digite_os_dados_corretos": "Digite os dados corretos"
+            "compra_finalizada": "Compra finalizada com sucesso"
         }
 
         sg.Popup(dicionario[opcao])

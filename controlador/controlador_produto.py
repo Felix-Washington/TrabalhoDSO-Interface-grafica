@@ -59,8 +59,6 @@ class ControladorProduto(AbstractControlador):
         produto = self.__produto_dao.get(codigo_produto_selecionado)
 
         button, values = self.__tela_produto.requisita_dado_atualizar(produto.nome, produto.valor, produto.quantidade)
-        print(values)
-
 
         if button == "Cancelar":
             self.__tela_produto.close()
@@ -83,7 +81,6 @@ class ControladorProduto(AbstractControlador):
                 lista_produtos.append('{:3d}'.format(produto.codigo) + '-' + produto.nome + '-' + str(produto.valor) + '-' +
                              str(produto.quantidade))
 
-        print(lista_produtos)
         return lista_produtos
 
     def lista(self):
@@ -96,7 +93,6 @@ class ControladorProduto(AbstractControlador):
                                                              str(produto.quantidade))
 
             button, values = self.__tela_produto.mostra_dados_cadastrados(dados)
-            print(values)
             self.__tela_produto.close()
             if button == "Voltar":
                 tela_lista = False

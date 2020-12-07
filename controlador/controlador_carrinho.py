@@ -24,18 +24,20 @@ class ControladorCarrinho(AbstractControlador):
             if self.__produtos_carrinho == []:
                 self.__produtos_carrinho.append([str(codigo), nome, str(valor), str(1)])
             else:
+                produto_dentro = False
                 for produto in self.__produtos_carrinho:
+                    print(produto[0])
                     if str(codigo) == produto[0]:
                         produto[3] = int(produto[3])
                         produto[3] += 1
                         produto[3] = str(produto[3])
-                        break
-                    else:
-                        self.__produtos_carrinho.append([str(codigo), nome, str(valor), str(1)])
+
+                #if not produto_dentro:
+                #    self.__produtos_carrinho.append([str(codigo), nome, str(valor), str(1)])
+
 
 
             self.__controlador_principal.controlador_produto.atualiza_quantidade(codigo)
-            self.__tela_carrinho.avisos("produto_adicionado")
 
         else:
             self.__tela_carrinho.avisos("quantidade_insuficiente")
@@ -51,18 +53,15 @@ class ControladorCarrinho(AbstractControlador):
                 produto[3] = str(produto[3])
                 if int(produto[3]) <= 0:
                     self.__produtos_carrinho.remove(produto)
-                    self.__tela_carrinho.avisos("produto_removido")
                     break
 
-
-
     def limpa_carrinho(self):
-        if self.__produtos_carrinho != []:
-            for produto in self.__produtos_carrinho:
-                self.__controlador_principal.controlador_produto.atualiza_estoque_carrinho(int(produto[0]), int(produto[3]))
-            self.__produtos_carrinho = []
-        else:
-            self.__tela_carrinho.avisos("carrinho_vazio")
+
+        for produto in self.__produtos_carrinho:
+            self.__controlador_principal.controlador_produto.atualiza_estoque_carrinho(int(produto[0]), int(produto[3]))
+        self.__produtos_carrinho = []
+
+        self.__tela_carrinho.avisos("limpa_carrinho")
 
     def finaliza_tela(self):
         pass
@@ -81,10 +80,8 @@ class ControladorCarrinho(AbstractControlador):
             if button == "Sim":
                 self.__controlador_principal.nf_cliente(total)
                 self.__tela_carrinho.close()
-                self.__controlador_principal.controlador_cliente.cliente_opcoes()
+                self.__produtos_carrinho = []
                 self.__tela_carrinho.avisos("compra_finalizada")
-
-
 
 
             elif button == "Não":
@@ -106,6 +103,7 @@ class ControladorCarrinho(AbstractControlador):
 
             elif button == "Finalizar compra":
                 self.finaliza_compra()
+                self.__exibe_tela = False
 
 
             elif button == "+":
