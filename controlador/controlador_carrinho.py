@@ -59,13 +59,16 @@ class ControladorCarrinho(AbstractControlador):
                     self.__produtos_carrinho.remove(produto)
                     break
 
-    def limpa_carrinho(self):
+    def limpa_carrinho(self, mensagem):
 
         for produto in self.__produtos_carrinho:
             self.__controlador_principal.controlador_produto.atualiza_estoque_carrinho(int(produto[0]), int(produto[3]))
         self.__produtos_carrinho = []
 
-        self.__tela_carrinho.avisos("limpa_carrinho")
+        if mensagem == "limpa_carrinho":
+            self.__tela_carrinho.avisos("limpa_carrinho")
+        elif mensagem == "compra_cancelada":
+            self.__tela_carrinho.avisos("compra_cancelada")
 
     def finaliza_tela(self):
         pass
@@ -89,7 +92,7 @@ class ControladorCarrinho(AbstractControlador):
 
 
             elif button == "Não":
-                self.__tela_carrinho.avisos("compra_cancelada")
+                self.limpa_carrinho("compra_cancelada")
 
     def atualiza(self,dados_obj):
         pass
@@ -102,7 +105,7 @@ class ControladorCarrinho(AbstractControlador):
             produtos_cadastrados = self.__controlador_principal.produtos_cadastrados()
             button, values = self.__tela_carrinho.mostra_opcoes(produtos_cadastrados, self.__produtos_carrinho)
             if button == "Voltar":
-                self.limpa_carrinho()
+                self.limpa_carrinho("limpa_carrinho")
                 self.__exibe_tela = False
 
             elif button == "Finalizar compra":
@@ -123,7 +126,7 @@ class ControladorCarrinho(AbstractControlador):
                     self.remove(values[1])
 
             elif button == "Limpar carrinho":
-                self.limpa_carrinho()
+                self.limpa_carrinho("limpa_carrinho")
 
             self.__tela_carrinho.close()
 

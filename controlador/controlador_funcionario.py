@@ -172,6 +172,7 @@ class ControladorFuncionario(AbstractControlador):
                 if cpf == self.__funcionario_logado.cpf and senha == self.__funcionario_logado.senha:
                     self.__funcionario_dao.remove(cpf)
                     tela_remove = False
+                    self.__log_funcionario = False
                     self.__tela_funcionario.avisos("remover")
 
                 else:
