@@ -127,7 +127,7 @@ class ControladorFuncionario(AbstractControlador):
             elif button == "Remover Cadastro":
                 self.remove()
                 tela_cadastro = False
-                self.__log_funcionario = False
+
             else:
                 tela_cadastro = False
 

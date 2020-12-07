@@ -178,17 +178,16 @@ class ControladorCliente(AbstractControlador):
             else:
                 cpf = int(values[0])
                 senha = values[1]
-                cliente = None
+
 
                 if cpf == self.__cliente_logado.cpf and senha == self.__cliente_logado.senha:
                     self.__cliente_dao.remove(cpf)
                     tela_remove = False
                     self.__tela_cliente.avisos("remover")
+
                 else:
                     self.__tela_cliente.avisos("dados_invalidos")
 
-                if cpf != cliente.cpf or senha != cliente.senha:
-                    self.__tela_cliente.avisos("dados_invalidos")
 
             self.__tela_cliente.close()
 

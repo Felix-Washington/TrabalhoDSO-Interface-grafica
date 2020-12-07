@@ -25,17 +25,21 @@ class ControladorCarrinho(AbstractControlador):
                 self.__produtos_carrinho.append([str(codigo), nome, str(valor), str(1)])
             else:
                 produto_dentro = False
-                for produto in self.__produtos_carrinho:
-                    print(produto[0])
-                    if str(codigo) == produto[0]:
-                        produto[3] = int(produto[3])
-                        produto[3] += 1
-                        produto[3] = str(produto[3])
-
-                #if not produto_dentro:
-                #    self.__produtos_carrinho.append([str(codigo), nome, str(valor), str(1)])
-
-
+                for produto_verifica in self.__produtos_carrinho:
+                    if str(codigo) == produto_verifica[0]:
+                        produto_dentro = True
+                        break
+                    else:
+                        produto_dentro = False
+                if produto_dentro:
+                    for produto in self.__produtos_carrinho:
+                        if str(codigo) == produto[0]:
+                            produto[3] = int(produto[3])
+                            produto[3] += 1
+                            produto[3] = str(produto[3])
+                            break
+                else:
+                    self.__produtos_carrinho.append([str(codigo), nome, str(valor), str(1)])
 
             self.__controlador_principal.controlador_produto.atualiza_quantidade(codigo)
 
