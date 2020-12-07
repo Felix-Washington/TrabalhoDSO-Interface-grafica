@@ -182,6 +182,7 @@ class ControladorCliente(AbstractControlador):
 
                 if cpf == self.__cliente_logado.cpf and senha == self.__cliente_logado.senha:
                     self.__cliente_dao.remove(cpf)
+                    self.__log_cliente = False
                     tela_remove = False
                     self.__tela_cliente.avisos("remover")
 
