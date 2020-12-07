@@ -98,10 +98,12 @@ class ControladorCarrinho(AbstractControlador):
             button, values = self.__tela_carrinho.confirma_tela("finaliza_compra")
 
             if button == "Sim":
-                self.__tela_carrinho.avisos("compra_finalizada")
-                nota_fiscal = NotaFiscal(self.__produtos_carrinho)
 
-                self.__controlador_principal.adiciona_nf_cliente(nota_fiscal)
+                cpf_cliente = self.__controlador_principal.controlador_cliente.dado_cliente()
+                self.__controlador_principal.controlador_nf.adiciona(cpf_cliente, total)
+                lista_nf = self.__controlador_principal.controlador_nf.lista()
+                self.__controlador_principal.controlador_nf.tela_nf(lista_nf)
+
             elif button == "Não":
                 self.__tela_carrinho.avisos("compra_cancelada")
 

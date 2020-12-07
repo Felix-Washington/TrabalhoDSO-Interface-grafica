@@ -2,7 +2,8 @@ from controlador.controlador_cliente import ControladorCliente
 from controlador.controlador_funcionario import ControladorFuncionario
 from controlador.controlador_produto import ControladorProduto
 from controlador.controlador_carrinho import ControladorCarrinho
-
+from controlador.controlador_nf import ControladorNotaFiscal
+from tela.nota_fiscal import NotaFiscal
 from tela.tela_principal import TelaPrincipal
 
 
@@ -12,8 +13,7 @@ class ControladorPrincipal:
         self.__controlador_funcionario = ControladorFuncionario(self)
         self.__controlador_produto = ControladorProduto()
         self.__controlador_carrinho = ControladorCarrinho(self)
-
-
+        self.__controlador_nf = ControladorNotaFiscal(self)
         self.__tela_principal = TelaPrincipal(self)
         self.__exibe_tela = True
 
@@ -26,8 +26,8 @@ class ControladorPrincipal:
         return self.__controlador_cliente
 
     @property
-    def nota_fiscal(self):
-        return self.__nota_fiscal
+    def controlador_nf(self):
+        return self.__controlador_nf
 
     def inicia(self):
         self.__tela_principal.avisos("inicia")

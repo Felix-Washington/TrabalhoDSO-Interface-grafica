@@ -2,8 +2,7 @@ import PySimpleGUI as sg
 
 
 class NotaFiscal:
-  def __init__(self, produtos):
-    self.__produtos = produtos
+  def __init__(self):
     self.__window = None
 
   def open(self):
@@ -13,10 +12,11 @@ class NotaFiscal:
   def close(self):
     self.__window.Close()
 
-  def relatorio_compras(self, cliente_notas_fiscais):
-    valor_total = 0
-    for produto in self.__produtos:
-      print("Código: ", produto.codigo, "Nome: ", produto.nome, "Valor: ", produto.valor ,"Quantidade: ", produto.quantidade)
-      valor_total += produto.valor * produto.quantidade
 
-    return produtos
+  def mostra_nf(self, lista_nf):
+    layout = [
+       [sg.Listbox(values=lista_nf, size=(30, 5))],
+      [sg.Submit("Ok")]
+    ]
+    self.__window = sg.Window("Nota Fiscal").Layout(layout)
+    return self.open()

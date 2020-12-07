@@ -13,9 +13,7 @@ class ControladorCliente(AbstractControlador):
         self.__tela_nota_fiscal = NotaFiscal
         self.__log_cliente = True
 
-    @property
-    def clientes(self):
-        return self.__clientes
+
 
     @property
     def cliente_logado(self):
@@ -123,7 +121,9 @@ class ControladorCliente(AbstractControlador):
     def compra(self):
 
         self.__controlador_principal.mostra_tela_carrinho()
-
+    def dado_cliente(self):
+        cpf_cliente = self.__cliente_logado.cpf
+        return cpf_cliente
     def ver_cadastro(self):
         tela_cadastro = True
 
