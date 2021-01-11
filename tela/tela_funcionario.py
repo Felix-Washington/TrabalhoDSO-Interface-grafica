@@ -51,12 +51,10 @@ class TelaFuncionario(AbstractTela):
 
         return self.open()
 
-    def tela_atualiza_cadastro(self):
+    def tela_atualiza_cadastro(self, nome, senha):
         layout = [
-            [sg.Text('Nome: ')],
-            [sg.InputText()],
-            [sg.Text("Senha: ")],
-            [sg.InputText()],
+            [sg.Text('Nome: ', size=(20, 1)), sg.InputText(nome, key='nome')],
+            [sg.Text("Senha: ", size=(20, 1)),  sg.InputText(senha, key='senha')],
 
             [sg.Submit("Salvar"), sg.Cancel("Cancelar")]]
 

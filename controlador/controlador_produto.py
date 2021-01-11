@@ -23,7 +23,7 @@ class ControladorProduto(AbstractControlador):
 
         while tela_adiciona:
             button, values = self.__tela_produto.requisita_dados_cadastro()
-
+            print(values[0].index)
             if button == "Cancelar":
                 self.__tela_produto.avisos("operacao_cancelada")
                 tela_adiciona = False
@@ -31,6 +31,8 @@ class ControladorProduto(AbstractControlador):
             elif values[0] == "" or values[1] == "" or values[2] == "" or values[3] == "":
                 self.__tela_produto.avisos("campo_vazio")
 
+            elif values[0].length < 3 or values[0].length > 3:
+                print("valor errado")
             else:
                 ja_existe = False
                 for produto in self.__produto_dao.get_all():
@@ -88,7 +90,10 @@ class ControladorProduto(AbstractControlador):
                 dados.append('{:3d}'.format(produto.codigo) +'-'+ produto.nome +'-'+ str(produto.valor) +'-'+
                                                              str(produto.quantidade))
 
-            button, values = self.__tela_produto.mostra_dados_cadastrados(dados)
+            button, values = self.__tela_produto.mostra_produtos(dados)
+
+            # primeira posição [0] é do dicionário, a segunda posição [0] é pra pegar o item selecionado do listbox, e o [0:3] é para pegar somente o código do produto
+            codigo_produto = int(values[0][0][0:3])
             self.__tela_produto.close()
             if button == "Voltar":
                 tela_lista = False
@@ -96,15 +101,13 @@ class ControladorProduto(AbstractControlador):
                 if not values[0]:
                     self.__tela_produto.avisos("selecione_produto")
                 else:
-
-                #primeira posição [0] é do dicionário, a segunda posição [0] é pra pegar o item selecionado do listbox, e o [0:3] é para pegar somente o código do produto
-                    self.atualiza(int(values[0][0][0:3]))
+                    self.atualiza(codigo_produto)
 
             elif button == "Remover produto":
                 if not values[0]:
                     self.__tela_produto.avisos("selecione_produto")
                 else:
-                    self.remove(int(values[0][0][0:3]))
+                    self.remove(codigo_produto)
 
     def verifica_quantidade(self, key):
         produto = self.__produto_dao.get(key)

@@ -6,7 +6,7 @@ class AbstractControlador(ABC):
 
   @abstractmethod
   def __init__(self):
-    self.__exibe_tela = True
+    pass
 
 
   @abstractmethod

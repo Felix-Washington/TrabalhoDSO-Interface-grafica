@@ -134,18 +134,19 @@ class ControladorFuncionario(AbstractControlador):
         tela_atualiza = True
 
         while tela_atualiza:
-            button, values = self.__tela_funcionario.tela_atualiza_cadastro()
+            button, values = self.__tela_funcionario.tela_atualiza_cadastro(
+                self.__funcionario_logado.nome, self.__funcionario_logado.senha)
 
             if button == "Cancelar":
                 self.__tela_funcionario.avisos("operacao_cancelada")
                 tela_atualiza = False
 
-            elif values[0] == "" or values[1] == "":
+            elif values["nome"] == "" or values["senha"] == "":
                 self.__tela_funcionario.avisos("campo_vazio")
             else:
 
-                self.__funcionario_logado.nome = values[0]
-                self.__funcionario_logado.senha = values[1]
+                self.__funcionario_logado.nome = values["nome"]
+                self.__funcionario_logado.senha = values["senha"]
                 self.__funcionario_dao.add(self.__funcionario_logado)
 
 

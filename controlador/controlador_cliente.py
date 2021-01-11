@@ -79,7 +79,6 @@ class ControladorCliente(AbstractControlador):
                 self.__tela_cliente.avisos("campo_vazio")
 
             else:
-
                 values[1] = int(values[1])
                 encontrou = False
 
@@ -146,18 +145,17 @@ class ControladorCliente(AbstractControlador):
         tela_atualiza = True
 
         while tela_atualiza:
-            button, values = self.__tela_cliente.tela_atualiza_cadastro()
-
+            button, values = self.__tela_cliente.tela_atualiza_cadastro(self.__cliente_logado.nome, self.__cliente_logado.senha)
             if button == "Cancelar":
                 self.__tela_cliente.avisos("operacao_cancelada")
                 tela_atualiza = False
 
-            elif values[0] == "" or values[1] == "":
+            elif values["nome"] == "" or values["senha"] == "":
                 self.__tela_cliente.avisos("campo_vazio")
             else:
 
-                self.__cliente_logado.nome = values[0]
-                self.__cliente_logado.senha = values[1]
+                self.__cliente_logado.nome = values["nome"]
+                self.__cliente_logado.senha = values["senha"]
                 self.__cliente_dao.add(self.__cliente_logado)
                 self.__tela_cliente.avisos("atualiza")
                 tela_atualiza = False
@@ -209,7 +207,6 @@ class ControladorCliente(AbstractControlador):
             self.__tela_cliente.avisos("desloga")
 
         self.__tela_cliente.close()
-
 
     def lista_clientes(self):
         return self.__cliente_dao.get_all()

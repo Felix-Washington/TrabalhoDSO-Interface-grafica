@@ -18,7 +18,6 @@ class ControladorPrincipal:
         cpf_cliente = self.__controlador_cliente.dado_cliente()
         self.__controlador_cliente.adiciona_nf(cpf_cliente, total)
 
-
     @property
     def controlador_produto(self):
         return self.__controlador_produto
@@ -45,31 +44,24 @@ class ControladorPrincipal:
     def mostra_tela_carrinho(self):
         self.__controlador_carrinho.abre_tela_inicial()
 
-
     def produtos_cadastrados(self):
         return self.controlador_produto.lista_produtos_disponiveis()
-
 
     def abre_tela_inicial(self):
 
         while self.__exibe_tela:
-
             button, values = self.__tela_principal.mostra_opcoes()
-
             if button == "Funcionário":
                 self.mostra_tela_funcionario()
 
             elif button == "Cliente":
                 self.mostra_tela_cliente()
 
-            else:
-
+            elif button is None:
                 self.fecha_sistema()
-
-
-
 
     def fecha_sistema(self):
         self.__exibe_tela = False
         self.__tela_principal.close()
         self.__tela_principal.avisos("finaliza")
+

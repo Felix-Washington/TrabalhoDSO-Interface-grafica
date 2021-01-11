@@ -42,7 +42,7 @@ class TelaProduto(AbstractTela):
         return self.open()
 
 
-    def mostra_dados_cadastrados(self, dados):
+    def mostra_produtos(self, dados):
         layout = [
             [sg.Text("Produtos cadastrados: ")],
             [sg.Listbox(values=dados, size=(30, 5))],
