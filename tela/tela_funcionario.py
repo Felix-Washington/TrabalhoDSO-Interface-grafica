@@ -116,7 +116,9 @@ class TelaFuncionario(AbstractTela):
             "atualiza": "Funcionário alterado com sucesso!",
             "usuario_ja_cadastrado": "Funcionário já cadastrado",
             "operacao_cancelada": "Operação Cancelada",
-            "campo_vazio": "Preencha todos os campos!"}
+            "campo_vazio": "Preencha todos os campos!",
+            "numero": "Digite apenas números no campo Número",
+            "letras": "Digite apenas letras no campo Nome"}
 
         sg.Popup(dicionario[opcao])
 

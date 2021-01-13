@@ -63,29 +63,33 @@ class ControladorFuncionario(AbstractControlador):
         while tela_adiciona:
             button, values = self.__tela_funcionario.dados_cadastro()
 
-            if button == "Cancelar":
-                tela_adiciona = False
+            #self.verifica_excecao(values)
 
-                self.__tela_funcionario.avisos("operacao_cancelada")
+            if self.verifica_excecao(values):
+                nome, cpf, senha = values[0], int(values[1]), values[2]
+                if button == "Cancelar":
+                    tela_adiciona = False
 
-            elif values[0] == "" or values[1] == "" or values[2] == "":
-                self.__tela_funcionario.avisos("campo_vazio")
+                    self.__tela_funcionario.avisos("operacao_cancelada")
 
-            else:
-                values[1] = int(values[1])
-                encontrou = False
-                for um_funcionario in self.__funcionario_dao.get_all():
-                    if um_funcionario.cpf == values[1]:
-                        encontrou = True
-
-                if encontrou:
-                    self.__tela_funcionario.avisos("usuario_ja_cadastrado")
+                elif values[0] == "" or values[1] == "" or values[2] == "":
+                    self.__tela_funcionario.avisos("campo_vazio")
 
                 else:
-                    funcionario = Funcionario(values[0], values[1], values[2])
-                    self.__funcionario_dao.add(funcionario)
-                    self.__tela_funcionario.avisos("cadastrar")
-                    tela_adiciona = False
+                    values[1] = int(values[1])
+                    encontrou = False
+                    for um_funcionario in self.__funcionario_dao.get_all():
+                        if um_funcionario.cpf == values[1]:
+                            encontrou = True
+
+                    if encontrou:
+                        self.__tela_funcionario.avisos("usuario_ja_cadastrado")
+
+                    else:
+                        funcionario = Funcionario(values[0], values[1], values[2])
+                        self.__funcionario_dao.add(funcionario)
+                        self.__tela_funcionario.avisos("cadastrar")
+                        tela_adiciona = False
 
 
             self.__tela_funcionario.close()
@@ -199,3 +203,33 @@ class ControladorFuncionario(AbstractControlador):
             self.__log_funcionario = False
             self.__funcionario_logado = None
 
+    def verifica_excecao(self, values):
+
+        nome, cpf, senha = values[0], values[1], values[2]
+        try:
+            ha_numero = any(char.isdigit() for char in nome)
+            inteiro = int(cpf)
+            if type(inteiro) != int or ha_numero:
+                raise ValueError
+
+            return True
+        except ValueError:
+            if ha_numero:
+                self.__tela_funcionario.avisos("letras")
+            else:
+                self.__tela_funcionario.avisos("numero")
+            return False
+
+
+def verifica_inteiro(self, entidade: str):
+    while True:
+        valor = input()
+
+        try:
+            inteiro = int(valor)
+            if type(inteiro) != int:
+                raise ValueError
+
+            return valor
+        except ValueError:
+            print(entidade, "deve ser composto apenas de números inteiros!")
